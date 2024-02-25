@@ -17,12 +17,6 @@ const baseHtml = `
 </body>
 </html>`
 
-function test() {
-    const main = baseHtml.getElementById('main')
-    main.innerHTML = '<h1>¿Ha funcionado?</h1>'
-}
-
-
 function generateNavBar() {
 
     // categorías: Camisetas, Pantalones, Zapatos, Accesorios (gorra/gorro, cinturón, tote bags, llaveros/pines)

@@ -5,6 +5,9 @@ const dbConnection = require('./config/db')
 const productRoutes = require('./routes/productRoutes')
 const { baseHtml } = require('./utils/helpers')
 
+const swaggerUI = require('swagger-ui-express')
+const docs = require('./docs/index')
+
 require('dotenv').config()
 dbConnection()
 
@@ -23,10 +26,14 @@ app.get('/', (req, res) => {
     res.send(html)
 })
 app.use('/shop', productRoutes)
-
-
+app.use('/api', productRoutes)
+app.use('/api/api-docs', swaggerUI.serve, swaggerUI.setup(docs))
 
 app.listen(process.env.PORT, () => console.log(`Server listening on port ${process.env.PORT}`))
+
+
+
+
 
 // IMPORTANTE: para reemplazar contenido del HTML base:
 // app.get('/', (req, res) => {
