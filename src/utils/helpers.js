@@ -8,12 +8,20 @@ const baseHtml = `
     <title>Backend Corner Shop</title>
 </head>
 <body>
-    <header class="nav" id="nav">
-    </header>
+    <header class="nav" id="nav"></header>
     <main class="main" id="main">
+        <h1>COCRETA</h1>   
+        <p id="test">Test</p>
+        <section class="productCards" id="productCards"></section>
     </main>
 </body>
 </html>`
+
+function test() {
+    const main = baseHtml.getElementById('main')
+    main.innerHTML = '<h1>¿Ha funcionado?</h1>'
+}
+
 
 function generateNavBar() {
 
