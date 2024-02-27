@@ -6,13 +6,11 @@ const ProductController = {
     async createProduct(req, res) {
         const apiView = req.originalUrl.includes('api')
         try {
-            console.log(req.body.name)
             const product = await Product.create({ ...req.body });
-            res.status(201).send({ message: 'Product successfully created', product });
             
-            // const html = replaceMain(newProductForm)
-            // const htmlApi = { html: html }
-            // apiView === false ? res.status(200).send(html) : res.status(200).json(htmlApi)
+            apiView === false
+                ? res.status(201).redirect('/shop/dashboard')
+                : res.status(201).json({ message: 'Product successfully created', product })
 
         } catch (error) {
             console.log(error);
@@ -24,11 +22,13 @@ const ProductController = {
 
     async getProducts(req, res) {
         const products = await Product.find({})
-        
+
         const apiView = req.originalUrl.includes('api')
         const productsHtml = generateProductCards(products)
-        
-        apiView === false ? res.status(200).send(replaceMain(productsHtml)) : res.status(200).json(products)
+
+        apiView === false
+            ? res.status(200).send(replaceMain(productsHtml))
+            : res.status(200).json(products)
     },
 
     async getProductById(req, res) {
@@ -55,9 +55,10 @@ const ProductController = {
         }
     },
 
-    getEditProductForm(req, res) { 
+    getEditProductForm(req, res) {
         const apiView = req.originalUrl.includes('api')
         try {
+            const productId = req.params.productId
             const html = replaceMain(editProductForm)
             const htmlApi = { html: html }
             apiView === false ? res.status(200).send(html) : res.status(200).json(htmlApi)

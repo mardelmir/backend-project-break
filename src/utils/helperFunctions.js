@@ -14,11 +14,11 @@ function generateProductCards(products) {
     for (let product of products) {
         html += `
             <div class="product-card">
-            <img src="${product.image || ''}" alt="${product.name}">
-            <h2>${product.name}</h2>
-            <p>${product.description || ''}</p>
-            <h4>${product.price}€</h4>
-            <a href="/products/${product._id}">Ver detalle</a>
+                <img src="${product.image || ''}" alt="${product.name}">
+                <h2>${product.name}</h2>
+                <p>${product.description || ''}</p>
+                <h4>${product.price}€</h4>
+                <a href="/products/${product._id}" class="btn">Ver detalle</a>
             </div>`
     }
     return html;
