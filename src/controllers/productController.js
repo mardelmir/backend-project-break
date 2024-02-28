@@ -1,13 +1,13 @@
 const Product = require('../models/Product')
-const { replaceMain, updateNavBar, printProductCards, printSingleProduct } = require('../utils/helperFunctions')
+const { generateHtml, printProductCards, printSingleProduct } = require('../utils/helperFunctions')
 const { newProductForm, editProductForm } = require('../utils/htmlTemplates')
 
 const ProductController = {
     getNewProductForm(req, res) {
+        const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
         try {
-            const html = replaceMain(newProductForm)
-
+            const html = generateHtml(newProductForm, dashboardView)
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).send({ message: 'New Product Form successfully retrieved', html: html })
@@ -24,7 +24,6 @@ const ProductController = {
         const apiView = req.originalUrl.includes('api')
         try {
             const product = await Product.create({ ...req.body });
-
             apiView === false
                 ? res.status(201).redirect('/shop/dashboard')
                 : res.status(201).send({ message: 'Product successfully created', product })
@@ -44,9 +43,7 @@ const ProductController = {
         try {
             const products = await Product.find({})
             const productsHtml = printProductCards(products, dashboardView)
-            const mainHtml = replaceMain(productsHtml)
-            const html = updateNavBar(dashboardView, mainHtml)
-
+            const html = generateHtml(productsHtml, dashboardView)
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).send({ message: 'Products successfully retrieved', products })
@@ -66,10 +63,8 @@ const ProductController = {
 
         try {
             const product = await Product.findById(productId);
-            const productHtml = printSingleProduct(product, dashboardView, productId)
-            const mainHtml = replaceMain(productHtml)
-            const html = updateNavBar(dashboardView, mainHtml)
-
+            const productHtml = printSingleProduct(product, productId, dashboardView)
+            const html = generateHtml(productHtml, dashboardView)
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).send({ message: 'Product successfully retrieved', product })
@@ -83,9 +78,10 @@ const ProductController = {
     },
 
     getEditProductForm(req, res) {
+        const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
         try {
-            const html = replaceMain(editProductForm)
+            const html = generateHtml(editProductForm, dashboardView)
                 .replace(/action="[^"]*"/, `action="/shop/dashboard/${req.params.productId}"`)
                 .replace(/<a class="formBtn" href="[^"]*">/, `<a class="formBtn" href="/shop/dashboard/${req.params.productId}">`)
 
@@ -105,7 +101,6 @@ const ProductController = {
         const apiView = req.originalUrl.includes('api')
         try {
             const updatedProduct = await Product.findByIdAndUpdate(req.params.productId, req.body, { new: true })
-
             apiView === false
                 ? res.status(200).redirect(`/shop/dashboard/${req.params.productId}`)
                 : res.status(200).send({ message: 'Product successfully updated', html: updatedProduct })
@@ -122,7 +117,6 @@ const ProductController = {
         const apiView = req.originalUrl.includes('api')
         try {
             const deletedProduct = await Product.findByIdAndDelete(req.params.productId);
-
             apiView === false
                 ? res.status(200).redirect('/shop/dashboard')
                 : res.status(200).send({ message: 'Product successfully deleted', deletedProduct })

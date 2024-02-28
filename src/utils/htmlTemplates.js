@@ -1,27 +1,23 @@
-const baseHtml = `
+const htmlArray = [`
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles.css">
-    <title>Backend Corner Shop</title>
-</head>
-<body>
-    <header class="header">
-        <!-- <img src="" alt="logo" /> -->
-        <nav class="nav" id="nav">
-            <a href="">Productos</a>
-            <a href="">Camisetas</a>
-            <a href="">Pantalones</a>
-            <a href="">Accesorios</a>
-            <a href="">Login</a>
-        </nav>
-        <div class="addBtn"></div>
-    </header>
-    <main class="main" id="main"></main>
-</body>
-</html>`
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles.css">
+        <title>Backend Corner Shop</title>
+    </head>
+    <body>
+        <header class="header">
+            <!-- <img src="" alt="logo" /> -->
+`, `
+        </header>
+        <main class="main" id="main">
+`, `
+        </main>
+    </body>
+</html>
+`]
 
 const index = `
 <h1>INICIO</h1>
@@ -32,7 +28,6 @@ const index = `
         <a href="/api/api-docs">Documentación API</a>
     </div>
 `
-
 const newProductForm = `
 <h1>Crear producto</h1>
     <form class="form" id="newForm" action="/shop/dashboard" method="post">
@@ -109,9 +104,4 @@ const editProductForm = `
     <a class="formBtn" href="/shop/dashboard"><button>Cancelar</button></a>
 `
 
-module.exports = {
-    baseHtml,
-    index,
-    newProductForm,
-    editProductForm
-}
+module.exports = { htmlArray, index, newProductForm, editProductForm }

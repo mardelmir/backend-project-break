@@ -1,13 +1,27 @@
-const { baseHtml, index } = require("./htmlTemplates");
+const { htmlArray, index } = require("./htmlTemplates");
 
-const replaceMain = (content) => baseHtml.replace(/<main class="main" id="main">[\s\S]*?<\/main>/s, `<main class="main" id="main">${content}</main>`)
-const generateIndex = (req, res) => res.status(200).send(replaceMain(index))
+const generateIndex = (req, res) => {
+    const [head, opMain, cloMainHtml] = htmlArray
+    const indexHtml = [head, opMain, index, cloMainHtml].join('')
+    res.status(200).send(indexHtml)
+}
 
-function updateNavBar(dashboardView, html) {
-    const addBtn = `<a href="/shop/dashboard/new">Crear producto</a>`
-    return dashboardView === true
-        ? html.replace(/<div class="addBtn"><\/div>/, `<div class="addBtn">${addBtn}</div>`)
-        : html
+function generateHtml(content, dashboardView) {
+    const [head, opMain, cloMainHtml] = htmlArray
+    let nav = `
+    <nav class="nav" id="nav">
+        <a href="">Productos</a>
+        <a href="">Camisetas</a>
+        <a href="">Pantalones</a>
+        <a href="">Accesorios</a>
+        <a href="">Login</a>
+    </nav>
+    `
+    dashboardView === true
+        ? nav += `<a href="/shop/dashboard/new" class="addBtn">Crear producto</a>`
+        : nav
+
+    return [head, nav, opMain, content, cloMainHtml].join('')
 }
 
 function printProductCards(products, dashboardView) {
@@ -27,12 +41,11 @@ function printProductCards(products, dashboardView) {
     return html;
 }
 
-function printSingleProduct(product, dashboardView, productId) {
+function printSingleProduct(product, productId, dashboardView) {
     const viewType = dashboardView === true ? 'dashboard' : 'products'
     const returnBtn = `<a href="/shop/${viewType}/" class="btn">Volver</a>`
     const editBtn = dashboardView === true ? `<a href="/shop/dashboard/${productId}/edit" class="btn">Editar</a>` : ''
     const deleteBtn = dashboardView === true ? `<a href="/shop/dashboard/${productId}/delete" class="btn">Borrar</a>` : ''
-
     return `
         <div class="product-card">
             <img src="${product.img || ''}" alt="${product.name}">
@@ -45,10 +58,4 @@ function printSingleProduct(product, dashboardView, productId) {
         </div>`
 }
 
-module.exports = {
-    replaceMain,
-    updateNavBar,
-    generateIndex,
-    printProductCards,
-    printSingleProduct
-}
+module.exports = { generateHtml, generateIndex, printProductCards, printSingleProduct }
