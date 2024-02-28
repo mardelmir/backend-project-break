@@ -1,5 +1,5 @@
 const Product = require('../models/Product')
-const { replaceMain, replaceNavBar, generateNavBar, generateProductCards } = require('../utils/helperFunctions')
+const { replaceMain, replaceNavBar, generateNavBar, printProductCards, printSingleProduct } = require('../utils/helperFunctions')
 const { newProductForm, editProductForm } = require('../utils/htmlTemplates')
 
 const ProductController = {
@@ -7,10 +7,10 @@ const ProductController = {
         const apiView = req.originalUrl.includes('api')
         try {
             const product = await Product.create({ ...req.body });
-            
+
             apiView === false
                 ? res.status(201).redirect('/shop/dashboard')
-                : res.status(201).json({ message: 'Product successfully created', product })
+                : res.status(201).send({ message: 'Product successfully created', product })
 
         } catch (error) {
             console.log(error);
@@ -21,31 +21,54 @@ const ProductController = {
     },
 
     async getProducts(req, res) {
-        const products = await Product.find({})
-
+        const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
-        const productsHtml = generateProductCards(products)
 
-        apiView === false
-            ? res.status(200).send(replaceMain(productsHtml))
-            : res.status(200).json(products)
+        try {
+            const products = await Product.find({})
+            const productsHtml = printProductCards(products, dashboardView)
+
+            apiView === false
+                ? res.status(200).send(replaceMain(productsHtml))
+                : res.status(200).send({ message: 'Products successfully retrieved', products })
+        }
+        catch (error) {
+            console.log(error);
+            apiView === false
+                ? res.status(500).send('Error: Could not get products')
+                : res.status(500).send({ message: 'Error: Could not get products' })
+        }
     },
 
     async getProductById(req, res) {
-        // const adminView = req.originalUrl.includes('dashboard')
+        const dashboardView = req.originalUrl.includes('dashboard')
+        const apiView = req.originalUrl.includes('api')
+        const productId = req.params.productId
 
-        // const apiView = req.originalUrl.includes('api')
-        // const htmlTest = 'HTML test'
-        // const apiTest = { test: 'api test' }
-        // apiView === false ? res.status(200).send(replaceMain(htmlTest)) : res.status(200).json(apiTest)
+        try {
+            const product = await Product.findById(productId);
+            const productHtml = printSingleProduct(product, dashboardView, productId)
+
+            apiView === false
+                ? res.status(200).send(replaceMain(productHtml))
+                : res.status(200).send({ message: 'Prpduct successfully retrieved', product })
+        }
+        catch (error) {
+            console.log(error);
+            apiView === false
+                ? res.status(500).send('Error: Could not get specified product')
+                : res.status(500).send({ message: 'Error: Could not get specified product' })
+        }
     },
 
     getNewProductForm(req, res) {
         const apiView = req.originalUrl.includes('api')
         try {
             const html = replaceMain(newProductForm)
-            const htmlApi = { html: html }
-            apiView === false ? res.status(200).send(html) : res.status(200).json(htmlApi)
+
+            apiView === false
+                ? res.status(200).send(html)
+                : res.status(200).send({ message: 'New Product Form successfully retrieved', html: html })
 
         } catch (error) {
             console.log(error);
@@ -60,8 +83,10 @@ const ProductController = {
         try {
             const productId = req.params.productId
             const html = replaceMain(editProductForm)
-            const htmlApi = { html: html }
-            apiView === false ? res.status(200).send(html) : res.status(200).json(htmlApi)
+
+            apiView === false
+                ? res.status(200).send(html)
+                : res.status(200).send({ message: 'Edit Product Form successfully retrieved', html: html })
 
         } catch (error) {
             console.log(error);
@@ -71,7 +96,18 @@ const ProductController = {
         }
     },
 
-    async updateProduct(req, res) { },
+    async updateProduct(req, res) {
+        const apiView = req.originalUrl.includes('api')
+        try {
+
+        }
+        catch (error) {
+            console.log(error);
+            apiView === false
+                ? res.status(500).send('Error: Could not update product')
+                : res.status(500).send({ message: 'Error: Could not update product' })
+        }
+    },
 
     async deleteProduct(req, res) { }
 }

@@ -16,7 +16,7 @@ dbConnection()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
-app.use(upload.none())
+// app.use(upload.none())
 
 app.get('/', generateIndex)
 app.use('/shop', productRoutes)

@@ -27,6 +27,7 @@ const index = `
 
 const newProductForm = `
 <h1>Crear producto</h1>
+    <! --<form class="form" id="newForm" action="/shop/dashboard" method="post"> -->
     <form class="form" id="newForm" action="/shop/dashboard" method="post">
         <label for="nameId">Nombre:</label>
         <input id="nameId" name="name" type="text" required>
@@ -63,7 +64,7 @@ const newProductForm = `
 `
 const editProductForm = `
 <h1>Editar producto</h1>
-    <form class="form" id="editForm" action="/shop/dashboard" method="put" enctype="multipart/form-data">
+    <form class="form" id="editForm" action="/shop/dashboard" method="put">
         <label for="nameId">Nombre:</label>
         <input id="nameId" name="name" type="text" required>
 
