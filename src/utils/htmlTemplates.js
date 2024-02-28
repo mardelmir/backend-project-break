@@ -8,8 +8,16 @@ const baseHtml = `
     <title>Backend Corner Shop</title>
 </head>
 <body>
-    <header>
-        <nav class="nav" id="nav"></nav>
+    <header class="header">
+        <!-- <img src="" alt="logo" /> -->
+        <nav class="nav" id="nav">
+            <a href="">Productos</a>
+            <a href="">Camisetas</a>
+            <a href="">Pantalones</a>
+            <a href="">Accesorios</a>
+            <a href="">Login</a>
+        </nav>
+        <div class="addBtn"></div>
     </header>
     <main class="main" id="main"></main>
 </body>
@@ -27,7 +35,6 @@ const index = `
 
 const newProductForm = `
 <h1>Crear producto</h1>
-    <! --<form class="form" id="newForm" action="/shop/dashboard" method="post"> -->
     <form class="form" id="newForm" action="/shop/dashboard" method="post">
         <label for="nameId">Nombre:</label>
         <input id="nameId" name="name" type="text" required>
@@ -59,27 +66,28 @@ const newProductForm = `
             <option value="Unitalla" name="Uni">Unitalla</option>
         </select>
 
-        <button type="submit">Crear</button>
+        <button class="formBtn" type="submit">Crear</button>
     </form>
+    <a class="formBtn" href="/shop/dashboard"><button>Cancelar</button></a>
 `
 const editProductForm = `
 <h1>Editar producto</h1>
-    <form class="form" id="editForm" action="/shop/dashboard" method="put">
+    <form class="form" id="editForm" action="/shop/dashboard/productId" method="post">
         <label for="nameId">Nombre:</label>
-        <input id="nameId" name="name" type="text" required>
+        <input id="nameId" name="name" type="text">
 
         <label for="descriptionId">Descripción:</label>
         <textarea id="descriptionId" name="description"></textarea>
 
         <label for="priceId">Precio:</label>
-        <input id="priceId" name="price" type="number" required>
+        <input id="priceId" name="price" type="number">
 
         <label for="imgId">Imagen:</label>
         <input id="imgId" name="img" type="file" >
 
         <label for="categoryId">Categoría:</label>
         <select id="categoryId" name="category">
-            <option value="Camisetas" name="tshirts" selected>Camisetas</option>
+            <option value="Camisetas" name="tshirts">Camisetas</option>
             <option value="Pantalones" name="pants">Pantalones</option>
             <option value="Zapatos" name="shoes">Zapatos</option>
             <option value="Accesorios" name="accessories">Accesorios</option>
@@ -87,7 +95,7 @@ const editProductForm = `
 
         <label for="sizeId">Talla:</label>
         <select id="sizeId" name="size">
-            <option value="XS" name="XS" selected>XS</option>
+            <option value="XS" name="XS">XS</option>
             <option value="S" name="S">S</option>
             <option value="M" name="M">M</option>
             <option value="L" name="L">L</option>
@@ -95,10 +103,15 @@ const editProductForm = `
             <option value="Unitalla" name="Uni">Unitalla</option>
         </select>
 
-        <button type="submit">Guardar</button>
-        <button type="reset">Borrar</button>
-        <a href="/shop/dashboard"><button>Cancelar</button></a>
+        <button class ="formBtn" type="submit">Guardar</button>
+        <button class="formBtn" type="reset">Borrar</button>
     </form>
+    <a class="formBtn" href="/shop/dashboard"><button>Cancelar</button></a>
 `
 
-module.exports = { baseHtml, index, newProductForm, editProductForm }
+module.exports = {
+    baseHtml,
+    index,
+    newProductForm,
+    editProductForm
+}
