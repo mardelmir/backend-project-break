@@ -1,5 +1,5 @@
 const Product = require('../models/Product')
-const { generateHtml, printProductCards, printSingleProduct } = require('../utils/helperFunctions')
+const { generateHtml, printAllProducts, printSingleProduct } = require('../utils/helperFunctions')
 const { newProductForm, editProductForm } = require('../utils/htmlTemplates')
 
 const ProductController = {
@@ -42,7 +42,7 @@ const ProductController = {
 
         try {
             const products = await Product.find({})
-            const productsHtml = printProductCards(products, dashboardView)
+            const productsHtml = printAllProducts(products, dashboardView)
             const html = generateHtml(productsHtml, dashboardView)
             apiView === false
                 ? res.status(200).send(html)
@@ -84,7 +84,6 @@ const ProductController = {
             const html = generateHtml(editProductForm, dashboardView)
                 .replace(/action="[^"]*"/, `action="/shop/dashboard/${req.params.productId}"`)
                 .replace(/<a class="formBtn" href="[^"]*">/, `<a class="formBtn" href="/shop/dashboard/${req.params.productId}">`)
-
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).send({ message: 'Edit Product Form successfully retrieved', html: html })

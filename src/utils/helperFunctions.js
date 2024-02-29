@@ -8,12 +8,15 @@ const generateIndex = (req, res) => {
 
 function generateHtml(content, dashboardView) {
     const [head, opMain, cloMainHtml] = htmlArray
+    const viewType = dashboardView === true ? 'dashboard' : 'products'
     let nav = `
     <nav class="nav" id="nav">
-        <a href="">Productos</a>
-        <a href="">Camisetas</a>
-        <a href="">Pantalones</a>
-        <a href="">Accesorios</a>
+        <form action="/shop/category" method="post">
+            <button type="submit" name="categoryBtn" value="Productos">Productos</button>
+            <button type="submit" name="categoryBtn" value="Camisetas">Camisetas</button>
+            <button type="submit" name="categoryBtn" value="Pantalones">Pantalones</button>
+            <button type="submit" name="categoryBtn" value="Accesorios">Accesorios</button>
+        </form>
         <a href="">Login</a>
     </nav>
     `
@@ -24,7 +27,7 @@ function generateHtml(content, dashboardView) {
     return [head, nav, opMain, content, cloMainHtml].join('')
 }
 
-function printProductCards(products, dashboardView) {
+function printAllProducts(products, dashboardView) {
     const viewType = dashboardView === true ? 'dashboard' : 'products'
     let html = '';
     for (let product of products) {
@@ -58,4 +61,33 @@ function printSingleProduct(product, productId, dashboardView) {
         </div>`
 }
 
-module.exports = { generateHtml, generateIndex, printProductCards, printSingleProduct }
+
+const btnRedirect = (router) => {
+    const dashboardView = req.originalUrl.includes('dashboard')
+    const viewType = dashboardView === true ? 'dashboard' : 'products'
+   
+    router.post(`/${viewType}/category`, (req, res) => {
+        const dashboardView = req.originalUrl.includes('dashboard')
+        const viewType = dashboardView === true ? 'dashboard' : 'products'
+        res.locals.category = req.body
+        return res.redirect(`/${viewType}/?category=encodeURIComponent(res.locals.category)`)
+    })
+
+    router.get(`/${viewType}`, (req, res) => {
+        console.log(req.query)
+    })
+}
+
+async function filterCategory(req, res) {
+    const dashboardView = req.originalUrl.includes('dashboard')
+    const viewType = dashboardView === true ? 'dashboard' : 'products'
+    // `action="/shop/${viewType}/${req.query.category}"`
+    try { 
+
+    }
+    catch (error) { }
+
+
+}
+
+module.exports = { generateHtml, generateIndex, printAllProducts, printSingleProduct, btnRedirect }

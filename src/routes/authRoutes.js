@@ -1,1 +1,1 @@
-// rutas localhost:3000/login y localhost:3000/register
+// rutas localhost:3000/shop/login y localhost:3000/shop/register
