@@ -39,7 +39,7 @@ const newProductForm = `
             <textarea id="descriptionId" name="description"></textarea>
 
             <label for="priceId">Precio:</label>
-            <input id="priceId" name="price" type="number" required>
+            <input id="priceId" name="price" type="number" step="0.01" required>
 
             <label for="imgId">Imagen:</label>
             <input id="imgId" name="img" type="file" >
@@ -66,44 +66,4 @@ const newProductForm = `
         <a class="formBtn cancelNew" href="/shop/dashboard">Cancelar</a>
     </div>
 `
-const editProductForm = `
-<h1>Editar producto</h1>
-    <form class="form" id="editForm" action="" method="post">
-        <label for="nameId">Nombre:</label>
-        <input id="nameId" name="name" type="text" placeholder="Nombre">
-
-        <label for="descriptionId">Descripción:</label>
-        <textarea id="descriptionId" name="description"></textarea>
-
-        <label for="priceId">Precio:</label>
-        <input id="priceId" name="price" type="number">
-
-        <label for="imgId">Imagen:</label>
-        <input id="imgId" name="img" type="file" >
-
-        <label for="categoryId">Categoría:</label>
-        <select id="categoryId" name="category">
-            <option value="Camisetas" name="Camisetas" selected>Camisetas</option>
-            <option value="Pantalones" name="Pantalones">Pantalones</option>
-            <option value="Zapatos" name="Zapatos">Zapatos</option>
-            <option value="Accesorios" name="Accesorios">Accesorios</option>
-        </select>
-
-        <label for="sizeId">Talla:</label>
-        <select id="sizeId" name="size">
-            <option value="XS" name="XS" selected>XS</option>
-            <option value="S" name="S">S</option>
-            <option value="M" name="M">M</option>
-            <option value="L" name="L">L</option>
-            <option value="XL" name="XL">XL</option>
-            <option value="Unitalla" name="Unitalla">Unitalla</option>
-        </select>
-        <div class="actions">
-            <button class="formBtn" type="submit">Guardar</button>
-            <button class="formBtn" type="reset">Borrar</button>
-            <a class="formBtn" href="/shop/dashboard">Cancelar</a>
-        </div>
-    </form>
-`
-
-module.exports = { htmlArray, index, newProductForm, editProductForm }
+module.exports = { htmlArray, index, newProductForm }

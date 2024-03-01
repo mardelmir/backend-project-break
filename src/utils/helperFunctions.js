@@ -1,4 +1,4 @@
-const { htmlArray, index, editProductForm } = require("./htmlTemplates");
+const { htmlArray, index } = require("./htmlTemplates");
 const Product = require('../models/Product')
 const generateIndex = (req, res) => {
     const [head, opMain, cloMainHtml] = htmlArray
@@ -11,10 +11,17 @@ function generateHtml(content, dashboardView) {
     const viewType = dashboardView === true ? 'dashboard' : 'products'
     const nav = `
     <nav class="nav" id="nav">
-        <form class="navForm" action="/shop/category" method="post">
-            <button type="submit" name="categoryBtn" value="Productos">Productos</button>
+        <a href="/shop/${viewType}">Productos</a>
+        <form class="navForm" action="/shop/${viewType}/category" method="post">
             <button type="submit" name="categoryBtn" value="Camisetas">Camisetas</button>
-            <button type="submit" name="categoryBtn" value="Pantalones">Pantalones</button>
+        </form>
+        <form class="navForm" action="/shop/${viewType}/category" method="post">
+            <button type="submit" name="categoryBtn" value="Pantalones">Pantalones</button>    
+        </form>
+        <form class="navForm" action="/shop/${viewType}/category" method="post">
+            <button type="submit" name="categoryBtn" value="Zapatos">Zapatos</button>
+        </form>
+        <form class="navForm" action="/shop/${viewType}/category" method="post">
             <button type="submit" name="categoryBtn" value="Accesorios">Accesorios</button>
         </form>
     </nav>`
@@ -26,14 +33,12 @@ function generateHtml(content, dashboardView) {
         ? userAction = `
         <div class="actions">
             <a href="">Login</a>
-            <a href="/shop/dashboard/new" class="addBtn">Crear producto</a>
+            <a href="/shop/dashboard/new">Crear producto</a>
         </div>`
         : userAction
 
     return [head, nav, userAction, opMain, content, cloMainHtml].join('')
 }
-
-
 
 const selectedCategory = (storedCategory) => {
     const categoryOp = [
@@ -84,7 +89,7 @@ async function populateEditForm(productId) {
                 <textarea id="descriptionId" name="description" placeholder="${storedProduct.description}"></textarea>
 
                 <label for="priceId">Precio:</label>
-                <input id="priceId" name="price" type="number" placeholder="${storedProduct.price}">
+                <input id="priceId" name="price" type="number" step="0.01" placeholder="${storedProduct.price}">
 
                 <label for="imgId">Imagen:</label>
                 <input id="imgId" name="img" type="file" >
@@ -155,33 +160,6 @@ function printSingleProduct(product, productId, dashboardView) {
                 ${deleteBtn}
             </div>
         </div>`
-}
-
-
-const btnRedirect = (router) => {
-    const dashboardView = req.originalUrl.includes('dashboard')
-    const viewType = dashboardView === true ? 'dashboard' : 'products'
-
-    router.post(`/${viewType}/category`, (req, res) => {
-        const dashboardView = req.originalUrl.includes('dashboard')
-        const viewType = dashboardView === true ? 'dashboard' : 'products'
-        res.locals.category = req.body
-        return res.redirect(`/${viewType}/?category=encodeURIComponent(res.locals.category)`)
-    })
-
-    router.get(`/${viewType}`, (req, res) => {
-        console.log(req.query)
-    })
-}
-
-async function filterCategory(req, res) {
-    const dashboardView = req.originalUrl.includes('dashboard')
-    const viewType = dashboardView === true ? 'dashboard' : 'products'
-    // `action="/shop/${viewType}/${req.query.category}"`
-    try {
-
-    }
-    catch (error) { }
 }
 
 module.exports = { generateHtml, generateIndex, populateEditForm, printAllProducts, printSingleProduct }
