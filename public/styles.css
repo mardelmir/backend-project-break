@@ -133,7 +133,7 @@ table {
 }
 
 /* --- */
-* {
+*, html {
     font-family: "Montserrat", sans-serif;
 }
 
@@ -143,7 +143,8 @@ a {
 }
 
 /* / */
-h1, .question {
+h1,
+.question {
     box-sizing: border-box;
     width: 100%;
     padding: 40px;
@@ -153,6 +154,23 @@ h1, .question {
 h1 {
     font-weight: 100;
     font-size: 40px;
+}
+
+h2 {
+    color: #5AB6FF;
+    font-weight: 200;
+    font-size: 20px;
+}
+
+h3 {
+    font-weight: 100;
+    font-size: 18px;
+}
+
+h4 {
+    color: #5AB6FF;
+    font-size: 500;
+    font-size: 16px;
 }
 
 .question {
@@ -167,6 +185,35 @@ h1 {
 }
 
 /* /shop/products + /shop/dashboard */
+.header {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #90C9FF;
+}
+
+.nav,
+.navForm,
+.userActions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.userActions {
+    flex-grow: 0.75;
+}
+
+.navForm button{
+    font-size: 15px;
+    padding: 0px;
+    border: none;
+    background-color: transparent;
+}
+
 .main {
     display: flex;
     flex-wrap: wrap;
@@ -182,8 +229,35 @@ h1 {
     border: .5px solid black;
 }
 
-.btn {
+/* Botones */
+
+.btn,
+.deleteForm {
+    text-align: center;
     padding: 10px;
-    background-color: aquamarine;
+    margin: 3px;
+    border-radius: 5px;
+    background-color: #D9EAF9;
 }
 
+.deleteForm {
+    padding: 8px;
+    background-color: #D9EAF9;
+}
+
+.deleteBtn {
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #5AB6FF;
+}
+
+.deleteForm:hover,
+.deleteForm:hover .deleteBtn {
+    color: white;
+    background-color: rgb(230, 36, 75);
+}

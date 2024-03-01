@@ -9,22 +9,28 @@ const generateIndex = (req, res) => {
 function generateHtml(content, dashboardView) {
     const [head, opMain, cloMainHtml] = htmlArray
     const viewType = dashboardView === true ? 'dashboard' : 'products'
-    let nav = `
+    const nav = `
     <nav class="nav" id="nav">
-        <form action="/shop/category" method="post">
+        <form class="navForm" action="/shop/category" method="post">
             <button type="submit" name="categoryBtn" value="Productos">Productos</button>
             <button type="submit" name="categoryBtn" value="Camisetas">Camisetas</button>
             <button type="submit" name="categoryBtn" value="Pantalones">Pantalones</button>
             <button type="submit" name="categoryBtn" value="Accesorios">Accesorios</button>
         </form>
+    </nav>`
+    let userAction = `
+    <div class="userActions">
         <a href="">Login</a>
-    </nav>
-    `
+    </div>`
     dashboardView === true
-        ? nav += `<a href="/shop/dashboard/new" class="addBtn">Crear producto</a>`
-        : nav
+        ? userAction = `
+        <div class="userActions">
+            <a href="">Login</a>
+            <a href="/shop/dashboard/new" class="addBtn">Crear producto</a>
+        </div>`
+        : userAction
 
-    return [head, nav, opMain, content, cloMainHtml].join('')
+    return [head, nav, userAction, opMain, content, cloMainHtml].join('')
 }
 
 function printAllProducts(products, dashboardView) {
@@ -49,9 +55,8 @@ function printSingleProduct(product, productId, dashboardView) {
     const returnBtn = `<a href="/shop/${viewType}/" class="btn">Volver</a>`
     const editBtn = dashboardView === true ? `<a href="/shop/dashboard/${productId}/edit" class="btn">Editar</a>` : ''
     const deleteBtn = dashboardView === true
-        //? `<a href="/shop/dashboard/${productId}/delete" class="deleteBtn">Borrar</a>`
         ? `
-        <form action="/shop/dashboard/${productId}/delete?_method=DELETE" method="POST">
+        <form class="deleteForm" action="/shop/dashboard/${productId}/delete?_method=DELETE" method="POST">
             <button class="deleteBtn" type="submit">Borrar</button>
         </form>`
         : ''
@@ -62,6 +67,8 @@ function printSingleProduct(product, productId, dashboardView) {
             <h2>${product.name}</h2>
             <p>${product.description || ''}</p>
             <h4>${product.price}€</h4>
+            <p>${product.category}</p>
+            <p>${product.size}</p>
             ${returnBtn}
             ${editBtn}
             ${deleteBtn}

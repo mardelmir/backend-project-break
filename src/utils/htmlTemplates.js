@@ -9,7 +9,7 @@ const htmlArray = [`
     </head>
     <body>
         <header class="header">
-            <!-- <img src="" alt="logo" /> -->
+           <img src="./img/logo.png" alt="logo" />
 `, `
         </header>
         <main class="main" id="main">
