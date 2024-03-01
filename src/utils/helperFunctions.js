@@ -48,7 +48,14 @@ function printSingleProduct(product, productId, dashboardView) {
     const viewType = dashboardView === true ? 'dashboard' : 'products'
     const returnBtn = `<a href="/shop/${viewType}/" class="btn">Volver</a>`
     const editBtn = dashboardView === true ? `<a href="/shop/dashboard/${productId}/edit" class="btn">Editar</a>` : ''
-    const deleteBtn = dashboardView === true ? `<a href="/shop/dashboard/${productId}/delete" class="btn">Borrar</a>` : ''
+    const deleteBtn = dashboardView === true
+        //? `<a href="/shop/dashboard/${productId}/delete" class="deleteBtn">Borrar</a>`
+        ? `
+        <form action="/shop/dashboard/${productId}/delete?_method=DELETE" method="POST">
+            <button class="deleteBtn" type="submit">Borrar</button>
+        </form>`
+        : ''
+
     return `
         <div class="product-card">
             <img src="${product.img || ''}" alt="${product.name}">
@@ -65,7 +72,7 @@ function printSingleProduct(product, productId, dashboardView) {
 const btnRedirect = (router) => {
     const dashboardView = req.originalUrl.includes('dashboard')
     const viewType = dashboardView === true ? 'dashboard' : 'products'
-   
+
     router.post(`/${viewType}/category`, (req, res) => {
         const dashboardView = req.originalUrl.includes('dashboard')
         const viewType = dashboardView === true ? 'dashboard' : 'products'
@@ -82,7 +89,7 @@ async function filterCategory(req, res) {
     const dashboardView = req.originalUrl.includes('dashboard')
     const viewType = dashboardView === true ? 'dashboard' : 'products'
     // `action="/shop/${viewType}/${req.query.category}"`
-    try { 
+    try {
 
     }
     catch (error) { }
@@ -90,4 +97,4 @@ async function filterCategory(req, res) {
 
 }
 
-module.exports = { generateHtml, generateIndex, printAllProducts, printSingleProduct, btnRedirect }
+module.exports = { generateHtml, generateIndex, printAllProducts, printSingleProduct }

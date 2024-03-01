@@ -82,8 +82,9 @@ const ProductController = {
         const apiView = req.originalUrl.includes('api')
         try {
             const html = generateHtml(editProductForm, dashboardView)
-                .replace(/action="[^"]*"/, `action="/shop/dashboard/${req.params.productId}"`)
+                .replace(`<form class="form" id="editForm" action="" method="post">`, `<form class="form" id="editForm" action="/shop/dashboard/${req.params.productId}?_method=PUT" method="post"> `)
                 .replace(/<a class="formBtn" href="[^"]*">/, `<a class="formBtn" href="/shop/dashboard/${req.params.productId}">`)
+            console.log(html)
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).send({ message: 'Edit Product Form successfully retrieved', html: html })

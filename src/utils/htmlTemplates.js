@@ -67,7 +67,7 @@ const newProductForm = `
 `
 const editProductForm = `
 <h1>Editar producto</h1>
-    <form class="form" id="editForm" action="/shop/dashboard/productId" method="post">
+    <form class="form" id="editForm" action="" method="post">
         <label for="nameId">Nombre:</label>
         <input id="nameId" name="name" type="text">
 
