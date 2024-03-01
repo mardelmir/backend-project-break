@@ -1,5 +1,5 @@
 const Product = require('../models/Product')
-const { generateHtml, printAllProducts, printSingleProduct } = require('../utils/helperFunctions')
+const { generateHtml, populateEditForm, printAllProducts, printSingleProduct } = require('../utils/helperFunctions')
 const { newProductForm, editProductForm } = require('../utils/htmlTemplates')
 
 const ProductController = {
@@ -77,13 +77,15 @@ const ProductController = {
         }
     },
 
-    getEditProductForm(req, res) {
+    async getEditProductForm(req, res) {
         const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
         try {
-            const html = generateHtml(editProductForm, dashboardView)
-                .replace(`<form class="form" id="editForm" action="" method="post">`, `<form class="form" id="editForm" action="/shop/dashboard/${req.params.productId}?_method=PUT" method="post"> `)
-                .replace(`<a class="formBtn" href="/shop/dashboard">`, `<a class="formBtn" href="/shop/dashboard/${req.params.productId}">`)
+            
+            const html = generateHtml(await populateEditForm(req.params.productId), dashboardView)
+                // .replace(`<form class="form" id="editForm" action="" method="post">`, `<form class="form" id="editForm" action="/shop/dashboard/${req.params.productId}?_method=PUT" method="post"> `)
+                // .replace(`<a class="formBtn" href="/shop/dashboard">`, `<a class="formBtn" href="/shop/dashboard/${req.params.productId}">`)
+    
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).send({ message: 'Edit Product Form successfully retrieved', html: html })
