@@ -10,13 +10,13 @@ const ProductController = {
             const html = generateHtml(newProductForm, dashboardView)
             apiView === false
                 ? res.status(200).send(html)
-                : res.status(200).send({ message: 'New Product Form successfully retrieved', html: html })
+                : res.status(200).json({ message: 'New Product Form successfully retrieved', html: html })
 
         } catch (error) {
             console.log(error);
             apiView === false
                 ? res.status(500).send('Error: Could not get New Product Form')
-                : res.status(500).send({ message: 'Error: Could not get New Product Form' })
+                : res.status(500).json({ message: 'Error: Could not get New Product Form' })
         }
     },
 
@@ -26,13 +26,13 @@ const ProductController = {
             const product = await Product.create({ ...req.body });
             apiView === false
                 ? res.status(201).redirect('/shop/dashboard')
-                : res.status(201).send({ message: 'Product successfully created', product })
+                : res.status(201).json({ message: 'Product successfully created', product })
 
         } catch (error) {
             console.log(error);
             apiView === false
                 ? res.status(500).send('Error: Could not create product')
-                : res.status(500).send({ message: 'Error: Could not create product' })
+                : res.status(500).json({ message: 'Error: Could not create product' })
         }
     },
 
@@ -56,13 +56,13 @@ const ProductController = {
             
             apiView === false
                 ? res.status(200).send(html)
-                : res.status(200).send({ message: `${products.length} Products successfully retrieved`, products })
+                : res.status(200).json({ message: `${products.length} Products successfully retrieved`, products })
         }
         catch (error) {
             console.log(error);
             apiView === false
                 ? res.status(500).send('Error: Could not get products')
-                : res.status(500).send({ message: 'Error: Could not get products' })
+                : res.status(500).json({ message: 'Error: Could not get products' })
         }
     },
 
@@ -78,13 +78,13 @@ const ProductController = {
             
             apiView === false
                 ? res.status(200).send(html)
-                : res.status(200).send({ message: 'Product successfully retrieved', product })
+                : res.status(200).json({ message: 'Product successfully retrieved', product })
         }
         catch (error) {
             console.log(error);
             apiView === false
                 ? res.status(500).send('Error: Could not get specified product')
-                : res.status(500).send({ message: 'Error: Could not get specified product' })
+                : res.status(500).json({ message: 'Error: Could not get specified product' })
         }
     },
 
@@ -95,13 +95,13 @@ const ProductController = {
             const html = generateHtml(await populateEditForm(req.params.productId), dashboardView)
             apiView === false
                 ? res.status(200).send(html)
-                : res.status(200).send({ message: 'Edit Product Form successfully retrieved', html: html })
+                : res.status(200).json({ message: 'Edit Product Form successfully retrieved', html: html })
 
         } catch (error) {
             console.log(error);
             apiView === false
                 ? res.status(500).send('Error: Could not get Edit Product Form')
-                : res.status(500).send({ message: 'Error: Could not get Edit Product Form' })
+                : res.status(500).json({ message: 'Error: Could not get Edit Product Form' })
         }
     },
 
@@ -121,13 +121,13 @@ const ProductController = {
 
             apiView === false
                 ? res.status(200).redirect(`/shop/dashboard/${req.params.productId}`)
-                : res.status(200).send({ message: 'Product successfully updated', html: updatedProduct })
+                : res.status(200).json({ message: 'Product successfully updated', html: updatedProduct })
         }
         catch (error) {
             console.log(error);
             apiView === false
                 ? res.status(500).send('Error: Could not update product')
-                : res.status(500).send({ message: 'Error: Could not update product' })
+                : res.status(500).json({ message: 'Error: Could not update product' })
         }
     },
 
@@ -137,13 +137,13 @@ const ProductController = {
             const deletedProduct = await Product.findByIdAndDelete(req.params.productId);
             apiView === false
                 ? res.status(200).redirect('/shop/dashboard')
-                : res.status(200).send({ message: 'Product successfully deleted', deletedProduct })
+                : res.status(200).json({ message: 'Product successfully deleted', deletedProduct })
         }
         catch (error) {
             console.log(error);
             apiView === false
                 ? res.status(500).send('Error: Could not delete product')
-                : res.status(500).send({ message: 'Error: Could not delete product' })
+                : res.status(500).json({ message: 'Error: Could not delete product' })
         }
     }
 }

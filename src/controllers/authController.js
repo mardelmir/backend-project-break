@@ -20,3 +20,9 @@
 // }
 
 // module.exports = {generateToken, verifyToken}
+
+const authController = {
+
+}
+
+module.exports = authController

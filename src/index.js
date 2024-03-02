@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const session = require('session')
+const session = require('express-session')
 const multer = require('multer')
 const upload = multer()
 const methodOverride = require('method-override')
@@ -8,7 +8,6 @@ const swaggerUI = require('swagger-ui-express')
 const docs = require('./docs/index')
 
 const dbConnection = require('./config/db')
-const hashedSecret = require('./config/config')
 const productRoutes = require('./routes/index')
 const { generateIndex } = require('./utils/helperFunctions')
 
@@ -18,7 +17,7 @@ dbConnection()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(session({
-    secret: hashedSecret,
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }

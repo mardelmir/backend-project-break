@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { generateToken, verifyToken } = require('../middlewares/authMiddleware')
 const ProductController = require('../controllers/productController')
+// const { generateToken, verifyToken } = require('../middlewares/authMiddleware')
 
 router.get('/dashboard/new', ProductController.getNewProductForm)
 router.post('/dashboard', ProductController.createProduct)

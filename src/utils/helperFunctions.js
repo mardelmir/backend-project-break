@@ -41,39 +41,22 @@ function generateHtml(content, dashboardView) {
 }
 
 const selectedCategory = (storedCategory) => {
-    const categoryOp = [
-        '<option value="Camisetas" name="tshirts">Camisetas</option>',
-        '<option value="Pantalones" name="pants">Pantalones</option>',
-        '<option value="Zapatos" name="shoes">Zapatos</option>',
-        '<option value="Accesorios" name="accessories">Accesorios</option>`',
-    ];
-    const array = [];
-    for (const option of categoryOp) {
-        const match = option.match(/value="([^"]+)"/);
-        match && match[1] === storedCategory
-            ? array.push(`<option value="${match[1]}" name="${match[1]}" selected>${match[1]}</option>`)
-            : array.push(option)
-    }
-    return array.join('');
+    const categories = ['Camisetas', 'Pantalones', 'Zapatos', 'Accesorios'];
+    const html = categories.map((category) =>
+        category !== storedCategory
+            ? `<option value="${category}" name="${category}">${category}</option>`
+            : `<option value="${category}" name="${category}" selected>${category}</option>`
+    );
+    return html.join('')
 };
 
 const selectedSize = (storedSize) => {
-    const sizeOp = [
-        '<option value="XS" name="XS">XS</option>',
-        '<option value="S" name="S">S</option>',
-        '<option value="M" name="M">M</option>',
-        '<option value="L" name="L">L</option>',
-        '<option value="XL" name="XL">XL</option>',
-        '<option value="Unitalla" name="Uni">Unitalla</option>',
-    ];
-    const array = [];
-    for (const option of sizeOp) {
-        const match = option.match(/value="([^"]+)"/);
-        match && match[1] === storedSize
-            ? array.push(`<option value="${match[1]}" name="${match[1]}" selected>${match[1]}</option>`)
-            : array.push(option)
-    }
-    return array.join('');
+    const sizes = ['XS', 'S', 'M', 'L', 'XL', 'Unitalla'];
+    const html = sizes.map((size) =>
+        size !== storedSize
+            ? `<option value="${size}" name="${size}">${size}</option>`
+            : `<option value="${size}" name="${size}" selected>${size}</option>`)
+    return html.join('')
 };
 
 async function populateEditForm(productId) {
