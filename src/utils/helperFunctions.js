@@ -27,13 +27,15 @@ function generateHtml(content, dashboardView) {
     </nav>`
     let userAction = `
     <div class="actions">
-        <a href="">Login</a>
+        <a href="/shop/login">Login</a>
     </div>`
     dashboardView === true
         ? userAction = `
         <div class="actions">
-            <a href="">Login</a>
             <a href="/shop/dashboard/new">Crear producto</a>
+            <form class="navForm" action="/shop/logout" method="post">
+                <button type="submit">Logout</button>
+            </form>
         </div>`
         : userAction
 
@@ -109,7 +111,7 @@ function printAllProducts(products, dashboardView) {
             <h2>${product.name}</h2>
             <p>${product.description || ''}</p>
             <h4>${product.price}€</h4>
-            <div class="detail-container">
+            <div class="btn-container">
                 ${detailBtn}
             </div>
         </div>`
@@ -137,7 +139,7 @@ function printSingleProduct(product, productId, dashboardView) {
             <h4>${product.price}€</h4>
             <p>Categoría: ${product.category}</p>
             <p>Talla: ${product.size}</p>
-            <div class="detail-container">
+            <div class="btn-container">
                 ${returnBtn}
                 ${editBtn}
                 ${deleteBtn}
