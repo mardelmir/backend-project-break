@@ -1,8 +1,6 @@
 const express = require('express')
 const app = express()
 const session = require('express-session')
-const multer = require('multer')
-const upload = multer()
 const methodOverride = require('method-override')
 const swaggerUI = require('swagger-ui-express')
 const docs = require('./docs/index')
@@ -11,20 +9,19 @@ const dbConnection = require('./config/db')
 const productRoutes = require('./routes/index')
 const { generateIndex } = require('./utils/helperFunctions')
 
-require('dotenv').config()
+require('dotenv').config({ override: true })
 dbConnection()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(session({
-    secret: process.env.SECRET,
+    secret: require('./config/session'),
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
 }))
 app.use(express.static('public'))
 app.use(methodOverride('_method'))
-// app.use(upload.none())
 
 app.get('/', generateIndex)
 app.use('/shop', productRoutes)

@@ -66,4 +66,44 @@ const newProductForm = `
         <a class="formBtn cancelNew" href="/shop/dashboard">Cancelar</a>
     </div>
 `
-module.exports = { htmlArray, index, newProductForm }
+
+const registerForm = ` 
+<h1>Registro</h1>
+    <form class="form" id="registerForm" action="/shop/register" method="post"">
+        <label for="emailId">Email:</label>
+        <input type="email" id="emailId" name="email" required>
+
+        <label for="passId">Contraseña:</label>
+        <input type="password" id="passId" name="password" required>
+
+        <div class="admin">
+            <label for="adminId">Administrador</label>
+            <input type="checkbox" id="adminId" name="admin">
+        </div>
+        
+        <div class="warning"></div>
+        <div class="btn-container">
+            <button class="formBtn" type="submit">Registrarse</button>
+            <a class="formBtn" href="/shop/login">Login</a>
+            <a class="formBtn" href="/shop/products">Volver</a>
+        </div>
+    </form>`
+
+const loginForm = ` 
+<h1>Iniciar sesión</h1>
+    <form class="form" id="loginForm" action="/shop/login" method="post"">
+        <label for="emailId">Email:</label>
+        <input type="email" id="emailId" name="email" required>
+
+        <label for="passId">Contraseña:</label>
+        <input type="password" id="passId" name="password" required>
+
+        <div class="warning"></div>
+        <div class="btn-container">
+            <button class="formBtn" type="submit">Login</button>
+            <a class="formBtn" href="/shop/register">Registrarse</a>
+            <a class="formBtn" href="/shop/products">Volver</a>
+        </div>
+    </form>`
+
+module.exports = { htmlArray, index, newProductForm, registerForm, loginForm }

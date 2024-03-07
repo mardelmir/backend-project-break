@@ -7,7 +7,7 @@ const ProductController = {
         const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
         try {
-            const html = generateHtml(newProductForm, dashboardView)
+            const html = generateHtml(newProductForm, req, dashboardView)
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).json({ message: 'New Product Form successfully retrieved', html: html })
@@ -52,7 +52,7 @@ const ProductController = {
                 : products = await Product.find({})
 
             const productsHtml = printAllProducts(products, dashboardView)
-            const html = generateHtml(productsHtml, dashboardView)
+            const html = generateHtml(productsHtml, req, dashboardView)
             
             apiView === false
                 ? res.status(200).send(html)
@@ -74,7 +74,7 @@ const ProductController = {
         try {
             const product = await Product.findById(productId);
             const productHtml = printSingleProduct(product, productId, dashboardView)
-            const html = generateHtml(productHtml, dashboardView)
+            const html = generateHtml(productHtml, req, dashboardView)
             
             apiView === false
                 ? res.status(200).send(html)
@@ -92,7 +92,7 @@ const ProductController = {
         const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
         try {
-            const html = generateHtml(await populateEditForm(req.params.productId), dashboardView)
+            const html = generateHtml(await populateEditForm(req.params.productId), req, dashboardView)
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).json({ message: 'Edit Product Form successfully retrieved', html: html })

@@ -1,7 +1,7 @@
 {
   "name": "backend-project-break",
   "version": "1.0.0",
-  "description": "Vamos a montar una tienda de ropa con un catálogo de productos y un dashboard para el administrador. Los productos se guardarán en una base de datos de mongo en Atlas. Podemos usar como referencia el pdf [web_ejemplo.pdf](web_ejemplo.pdf) que contiene un ejemplo de cómo podría ser la interfaz de la tienda y el dashboard.",
+  "description": "Tienda de ropa con un catálogo de productos y un dashboard para el administrador. Los productos se guardan en una base de datos de mongo en Atlas. La tienda se puede visualizar como HTML o como JSON",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -23,7 +23,6 @@
     "jsonwebtoken": "9.0.2",
     "method-override": "3.0.0",
     "mongoose": "8.2.0",
-    "multer": "1.4.5-lts.1",
     "swagger-ui-express": "5.0.0"
   },
   "devDependencies": {

@@ -1,80 +1,17 @@
 const firebaseApp = require('../config/firebase')
 const { getAuth, connectAuthEmulator, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } = require('firebase/auth')
 const auth = getAuth(firebaseApp)
+
 const { generateHtml } = require('../utils/helperFunctions')
+const { registerForm, loginForm } = require('../utils/htmlTemplates')
+const User = require('../models/User')
+
+// Emulador. Terminal: firebase emulators:start
+connectAuthEmulator(auth, 'http://localhost:9099')
 
 const authController = {
-    getLoginForm(req, res) {
-        try {
-            const loginForm = ` 
-            <h1>Iniciar sesión</h1>
-            <form class="form" id="loginForm" action="/shop/login" method="post"">
-                <label for="emailId">Email:</label>
-                <input type="email" id="emailId" name="email" required>
-
-                <label for="passId">Contraseña:</label>
-                <input type="password" id="passId" name="password" required>
-
-                <div class="btn-container">
-                    <button class="formBtn" type="submit">Login</button>
-                    <a class="formBtn" href="/shop/register">Registrarse</a>
-                    <a class="formBtn" href="/shop/products">Volver</a>
-                </div>
-            </form>`
-
-            const html = generateHtml(loginForm)
-            res.status(200).send(html)
-        }
-        catch (error) {
-            console.log(error)
-            res.status(500).send('Error: Could not get New Product Form')
-        }
-    },
-
-    async loginEmailPassword(req, res) {
-        const loginEmail = req.body.email
-        const loginPassword = req.body.password
-
-        try {
-            // const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-            // console.log(userCredential.user)
-        }
-        catch (error) {
-            console.log(error)
-            if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
-                // HTML `Contraseña icorrecta, inténtalo de nuevo`
-            } else {
-                // HTML `Error: ${error.message}`
-            }
-        }
-    },
-
     getRegisterForm(req, res) {
-        try {
-            const registerForm = ` 
-            <h1>Registro</h1>
-            <form class="form" id="registerForm" action="/shop/register" method="post"">
-                <label for="emailId">Email:</label>
-                <input type="email" id="emailId" name="email" required>
-
-                <label for="passId">Contraseña:</label>
-                <input type="password" id="passId" name="password" required>
-
-                <div class="admin">
-                    <label for="adminId">Administrador</label>
-                    <input type="checkbox" id="adminId" name="admin">
-                </div>
-                
-                <div class="btn-container">
-                    <button class="formBtn" type="submit">Registrarse</button>
-                    <a class="formBtn" href="/shop/login">Login</a>
-                    <a class="formBtn" href="/shop/products">Volver</a>
-                </div>
-            </form>`
-
-            const html = generateHtml(registerForm)
-            res.status(200).send(html)
-        }
+        try { res.status(200).send(generateHtml(registerForm, req)) }
         catch (error) {
             console.log(error)
             res.status(500).send('Error: Could not get New Product Form')
@@ -82,26 +19,62 @@ const authController = {
     },
 
     async createAccount(req, res) {
-        const regEmail = emailInput.value
-        const regPassword = passwordInput.value
-    
-        // try {
-        //     const userCredential = await createUserWithEmailAndPassword(auth, regEmail, regPassword)
-        //     console.log(userCredential.user)
-    
-        // }
-        // catch (error) {
-        //     console.log(error)
-        //     if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
-        //         // HTML `Contraseña icorrecta, inténtalo de nuevo`
-        //     } else {
-        //         // HTML `Error: ${error.message}`
-        //     }
-        // }
+        const { email, password, role } = req.body
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+            const userRole = role == 'on' ? 'admin' : 'user'
+            await User.create({ uid: userCredential.user.uid, role: userRole })
+
+            //res.status(201).redirect('/shop/login') PENSAR
+            await signInWithEmailAndPassword(auth, email, password)
+            req.session.token = userCredential.user.accessToken
+
+            userRole == 'admin' ? res.status(201).redirect('/shop/dashboard') : res.status(201).redirect('/shop/products')
+        }
+        catch (error) {
+            console.log(error)
+            if (error.code == 'auth/weak-password') {
+                const warning = registerForm.replace(`<div class="warning"></div>`, `<div class="warning">Contraseña insegura, genera una nueva contraseña</div>`)
+                res.send(generateHtml(warning, req))
+            } else if (error.code == 'auth/email-already-in-use') {
+                const err = registerForm.replace(`<div class="warning"></div>`, `<div class="warning">Email ya registrado</div>`)
+                res.send(generateHtml(err, req))
+            } else {
+                const err = registerForm.replace(`<div class="warning"></div>`, `<div class="warning">${error.message}</div>`)
+                res.send(generateHtml(err, req))
+            }
+        }
+    },
+
+    getLoginForm(req, res) {
+        try { res.status(200).send(generateHtml(loginForm, req)) }
+        catch (error) {
+            console.log(error)
+            res.status(500).send('Error: Could not get New Product Form')
+        }
+    },
+
+    async login(req, res) {
+        const { email, password } = req.body
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password)
+            console.log(userCredential.user)
+        }
+        catch (error) {
+            console.log(error)
+            if (error.code == 'auth/wrong-password') {
+                const warning = loginForm.replace(`<div class="warning"></div>`, `<div class="warning">Contraseña icorrecta, inténtalo de nuevo</div>`)
+                res.send(generateHtml(warning, req))
+            } else {
+                const err = loginForm.replace(`<div class="warning"></div>`, `<div class="warning">${error.message}</div>`)
+                res.send(generateHtml(err, req))
+            }
+        }
     },
 
     async logout(req, res) {
         await signOut(auth)
+        req.session.destroy()
         res.redirect('/shop/products')
     }
 }
@@ -109,11 +82,32 @@ const authController = {
 module.exports = authController
 
 
+// OK Login
+const login = async () => {
+    // const loginEmail = req.body.email
+    // const loginPassword = req.body.password
+    const loginEmail = 'test@example.com'
+    const loginPassword = 'test123'
 
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+        //console.log(userCredential.user)
+        //console.log(userCredential.user.uid)
+        //console.log(userCredential.user.accessToken)
+    }
+    catch (error) {
+        console.log(error)
 
+        //if (error.code == AuthErrorCodes.INVALID_PASSWORD) {
+        if (error.code == 'auth/wrong-password') {
+            console.warn('Contraseña incorrecta')
+            // HTML `Contraseña icorrecta, inténtalo de nuevo`
+        } else {
+            // HTML `Error: ${error.message}`
+        }
+    }
+}
 
-// Emulador
-connectAuthEmulator(auth, 'http://localhost:9099') // en terminal: firebase emulators:start --only auth
 
 
 // Saber si está logado o no, ¿esto lo puedo hacer con req.session?
@@ -126,7 +120,4 @@ connectAuthEmulator(auth, 'http://localhost:9099') // en terminal: firebase emul
 //         }
 //     })
 // }
-// monitorAuthState()
-
-// // Nav con logoutBtn -> onclick="logout()"
-// const logout = async () => await signOut(auth)
+// monitorAuthState() 

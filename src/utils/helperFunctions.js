@@ -1,12 +1,13 @@
 const { htmlArray, index } = require("./htmlTemplates");
 const Product = require('../models/Product')
+
 const generateIndex = (req, res) => {
     const [head, opMain, cloMainHtml] = htmlArray
     const indexHtml = [head, opMain, index, cloMainHtml].join('')
     res.status(200).send(indexHtml)
 }
 
-function generateHtml(content, dashboardView) {
+function generateHtml(content, req, dashboardView) {
     const [head, opMain, cloMainHtml] = htmlArray
     const viewType = dashboardView === true ? 'dashboard' : 'products'
     const nav = `
@@ -25,19 +26,29 @@ function generateHtml(content, dashboardView) {
             <button type="submit" name="categoryBtn" value="Accesorios">Accesorios</button>
         </form>
     </nav>`
-    let userAction = `
-    <div class="actions">
-        <a href="/shop/login">Login</a>
-    </div>`
-    dashboardView === true
-        ? userAction = `
-        <div class="actions">
-            <a href="/shop/dashboard/new">Crear producto</a>
-            <form class="navForm" action="/shop/logout" method="post">
-                <button type="submit">Logout</button>
-            </form>
-        </div>`
-        : userAction
+    let userAction = ''
+
+    if (!req.session.token) {
+        userAction = `
+            <div class="actions">
+                <a href="/shop/login">Login</a>
+            </div>`
+    } else {
+        dashboardView === true
+            ? userAction = `
+            <div class="actions">
+                <a href="/shop/dashboard/new">Crear producto</a>
+                <form class="navForm" action="/shop/logout" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>`
+            : userAction = `
+            <div class="actions">
+                <form class="navForm" action="/shop/logout" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>`
+    }
 
     return [head, nav, userAction, opMain, content, cloMainHtml].join('')
 }
