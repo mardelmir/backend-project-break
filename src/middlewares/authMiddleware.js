@@ -1,20 +1,40 @@
-// Archivo que contendrá el middleware para comprobar si el usuario está autenticado. Este buscará la sesión del usuario y, si no la encuentra, redirigirá al formulario de login.
+const firebaseApp = require('../config/firebase')
+const { getAuth, onAuthStateChanged } = require('firebase/auth')
+const auth = getAuth(firebaseApp)
 
-const jwt = require('jsonwebtoken') 
-require('dotenv').config() // para secret
-
-function verifyToken (req, res, next) {
-    const token = req.session.token
-    if (!token) {
-        return res.status(401).json({mensaje: 'token no generado'})
-    } 
-    jwt.verify(token, process.env.SECRET, (error, decoded) => {
-        if(error) {
-            return res.status(401).json({mensaje: 'token inválido'})
+async function checkAuthState(req, res, next) {
+    onAuthStateChanged(auth, async user => {
+        if (user) {
+            const userToken = await user.getIdToken()
+            return req.session.token === userToken ? next() : res.status(401).redirect('/shop/login')
         }
-        req.user = decoded.user
-        next()
     })
+
+    // const stateChanged = await onAuthStateChanged(auth, async user => {
+    //     if (user) {
+    //         const idToken = await user.getIdToken()
+    //         return idToken === req.session.token ? loggedIn = true : loggedIn = false
+    //     }
+    // })
+    // checkState === true ? next() : res.status(401).redirect('/shop/login')
+   
+    //return loggedIn === true ? next() : res.status(401).redirect('/shop/login')
+
 }
 
-module.exports = verifyToken
+module.exports = checkAuthState
+
+
+
+
+// function useFirebaseToken() {
+//     const auth = getAuth();
+//     onAuthStateChanged(auth, (user) => {
+//         if (user) {
+//             user.getIdToken(true)
+//                 .then(latestToken => setToken(latestToken))
+//                 .catch(err => console.log(err))
+//         }
+//     })
+//     return token
+// }

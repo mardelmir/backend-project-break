@@ -76,9 +76,9 @@ const registerForm = `
         <label for="passId">Contraseña:</label>
         <input type="password" id="passId" name="password" required>
 
-        <div class="admin">
-            <label for="adminId">Administrador</label>
-            <input type="checkbox" id="adminId" name="admin">
+        <div class="role">
+            <label for="roleId">Administrador</label>
+            <input type="checkbox" id="roleId" name="role">
         </div>
         
         <div class="warning"></div>

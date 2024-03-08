@@ -9,13 +9,13 @@ const dbConnection = require('./config/db')
 const productRoutes = require('./routes/index')
 const { generateIndex } = require('./utils/helperFunctions')
 
-require('dotenv').config({ override: true })
+require('dotenv').config()
 dbConnection()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(session({
-    secret: require('./config/session'),
+    secret: require('./config/session') || process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
