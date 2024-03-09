@@ -1,6 +1,6 @@
 const firebaseApp = require('../config/firebase')
 const { getAuth, connectAuthEmulator, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } = require('firebase/auth')
-const {} = require('firebase/auth')
+const { } = require('firebase/auth')
 const auth = getAuth(firebaseApp)
 
 const { generateHtml } = require('../utils/helperFunctions')
@@ -27,9 +27,8 @@ const authController = {
             const userRole = role === 'on' ? 'admin' : 'user'
             await User.create({ uid: userCredential.user.uid, role: userRole })
 
-            //res.status(201).redirect('/shop/login') PENSAR
-            await signInWithEmailAndPassword(auth, email, password)
-            req.session.token = userCredential.user.accessToken
+            const loginCredential = await signInWithEmailAndPassword(auth, email, password)
+            req.session.token = await loginCredential.user.getIdToken()
 
             userRole == 'admin' ? res.status(201).redirect('/shop/dashboard') : res.status(201).redirect('/shop/products')
         }
@@ -60,11 +59,11 @@ const authController = {
         const { email, password } = req.body
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
-            const getIdToken = await userCredential.user.getIdToken()    
-            req.session.uid = userCredential.user.uid
-            req.session.token = getIdToken
-            
             const user = await User.find({ uid: userCredential.user.uid })
+            req.session.uid = userCredential.user.uid
+            req.session.role = user[0].role
+            //req.session.token = await userCredential.user.getIdToken()
+
             user[0].role == 'admin' ? res.status(201).redirect('/shop/dashboard') : res.status(201).redirect('/shop/products')
         }
         catch (error) {
@@ -72,7 +71,11 @@ const authController = {
             if (error.code == 'auth/wrong-password') {
                 const warning = loginForm.replace(`<div class="warning"></div>`, `<div class="warning">Contraseña icorrecta, inténtalo de nuevo</div>`)
                 res.send(generateHtml(warning, req))
-            } else {
+            } else if (error.code == 'auth/user-not-found') {
+                const warning = loginForm.replace(`<div class="warning"></div>`, `<div class="warning">Usuario no registrado</div>`)
+                res.send(generateHtml(warning, req))
+            }
+            else {
                 const err = loginForm.replace(`<div class="warning"></div>`, `<div class="warning">${error.message}</div>`)
                 res.send(generateHtml(err, req))
             }

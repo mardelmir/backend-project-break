@@ -28,21 +28,21 @@ function generateHtml(content, req, dashboardView) {
     </nav>`
     let userAction = ''
 
-    if (req.session.token) {
+    if (req.session.uid) {
         dashboardView === true
             ? userAction = `
-        <div class="actions">
-            <a href="/shop/dashboard/new">Crear producto</a>
-            <form class="navForm" action="/shop/logout" method="post">
-                <button type="submit">Logout</button>
-            </form>
-        </div>`
+            <div class="actions">
+                <a href="/shop/dashboard/new">Crear producto</a>
+                <form class="navForm" action="/shop/logout" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>`
             : userAction = `
-        <div class="actions">
-            <form class="navForm" action="/shop/logout" method="post">
-                <button type="submit">Logout</button>
-            </form>
-        </div>`
+            <div class="actions">
+                <form class="navForm" action="/shop/logout" method="post">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>`
     } else {
         userAction = `
         <div class="actions">

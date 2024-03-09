@@ -1,3 +1,5 @@
+// <a href="/"><img class="miniLogo" src="/img/logo.png" alt="logo"/></a>
+
 const htmlArray = [`
 <!DOCTYPE html>
 <html lang="es">
@@ -8,10 +10,12 @@ const htmlArray = [`
         <title>Backend Corner Shop</title>
     </head>
     <body>
+        <div class="header-wrapper">
         <header class="header">
-           <a href="/"><img class="logo" src="/img/logo.png" alt="logo"/></a>
+        <a class="logo-container" href="/"></a>
 `, `
-        </header>
+        </header> 
+        </div>  
         <main class="main" id="main">
 `, `
         </main>
