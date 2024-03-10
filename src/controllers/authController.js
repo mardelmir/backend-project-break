@@ -7,7 +7,6 @@ const { generateHtml } = require('../utils/helperFunctions')
 const { registerForm, loginForm } = require('../utils/htmlTemplates')
 const User = require('../models/User')
 
-
 // Emulador: firebase emulators:start
 connectAuthEmulator(auth, 'http://localhost:9099')
 
@@ -62,7 +61,6 @@ const authController = {
             const user = await User.find({ uid: userCredential.user.uid })
             req.session.uid = userCredential.user.uid
             req.session.role = user[0].role
-            //req.session.token = await userCredential.user.getIdToken()
 
             user[0].role == 'admin' ? res.status(201).redirect('/shop/dashboard') : res.status(201).redirect('/shop/products')
         }

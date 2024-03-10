@@ -1,5 +1,3 @@
-// <a href="/"><img class="miniLogo" src="/img/logo.png" alt="logo"/></a>
-
 const htmlArray = [`
 <!DOCTYPE html>
 <html lang="es">
@@ -27,11 +25,11 @@ const index = `
 <h1>INICIO</h1>
     <p class="question">¿Dónde te gustaría ir?</p>
     <div class="option-container">
-        <a href="/shop/products">Tienda</a>
-        <a href="/api/products">Api</a>
-        <a href="/api/api-docs">Documentación API</a>
-    </div>
-`
+        <a class="option" href="/shop/products">Tienda</a>
+        <a class="option" href="/api/products">API</a>
+        <a class="option" href="/api/api-docs">Documentación API</a>
+    </div>`
+
 const newProductForm = `
 <h1>Crear producto</h1>
     <div class="newForm-container">
@@ -68,8 +66,7 @@ const newProductForm = `
             <button class="formBtn" type="submit">Crear</button>
         </form>
         <a class="formBtn cancelNew" href="/shop/dashboard">Cancelar</a>
-    </div>
-`
+    </div>`
 
 const registerForm = ` 
 <h1>Registro</h1>
@@ -110,4 +107,38 @@ const loginForm = `
         </div>
     </form>`
 
-module.exports = { htmlArray, index, newProductForm, registerForm, loginForm }
+const notFound = `
+<h1>Producto no encontrado</h1>
+    <div class="notFound-container">
+        <p>Producto no encontrado, introduzca un id de producto válido</p>
+        <a class="btn" href="/shop/products">Volver</a>
+    </div>`
+
+const unauthorizedUser = `
+<h1>Usuario no autorizado</h1>
+    <div class="unauthorized-container">
+        <h4>Su usuario no tiene permisos de administrador</h4> 
+        <p>Si desea acceder al dashboard, cierre la sesión actual e inicie sesión con una cuenta de administrador</p>
+        <div class="auth-options">
+            <a class="btn" href="/shop/products">Volver al catálogo de productos</a>
+            <form action="/shop/logout" method="post">
+                <button class="btn" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>`
+
+const notLoggedIn = `
+<h1>Usuario no identificado</h1>
+    <div class="unauthorized-container">
+        <h4>No se ha detectado inicio de sesión</h4> 
+        <p>Si desea acceder al dashboard, inicie sesión con una cuenta de administrador</p>
+        <div class="auth-options">
+            <a class="btn" href="/shop/products">Volver al catálogo de productos</a>
+            <a class="btn" href="/shop/login">Iniciar sesión</a>
+        </div>
+    </div>`
+
+module.exports = { htmlArray, index, newProductForm, registerForm, loginForm, notFound, unauthorizedUser, notLoggedIn }
+
+
+// <a href="/"><img class="miniLogo" src="/img/logo.png" alt="logo"/></a>

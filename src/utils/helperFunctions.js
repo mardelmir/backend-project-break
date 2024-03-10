@@ -28,7 +28,7 @@ function generateHtml(content, req, dashboardView) {
     </nav>`
     let userAction = ''
 
-    if (req.session.uid) {
+    if (req.session.uid && req.session.role) {
         dashboardView === true
             ? userAction = `
             <div class="actions">

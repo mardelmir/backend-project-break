@@ -187,6 +187,21 @@ h4 {
     padding: 20px;
 }
 
+.option {
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: #5b677d;
+    color: white;
+}
+
+.option:hover {
+    box-shadow: 0px 0px 10px 5px #b8dbfb;
+    background-color: #b8dbfb;
+    border: 1.5px solid white;
+    color: #5b677d;
+    padding: 7px 14px;
+}
+
 /* Header */
 
 .header {
@@ -240,6 +255,12 @@ h4 {
     cursor: pointer;
 }
 
+.actions a:hover,
+.nav a:hover,
+.navForm button:hover {
+    color: white
+}
+
 /* Main */
 .main {
     display: flex;
@@ -247,7 +268,7 @@ h4 {
     justify-content: center;
     gap: 15px;
     position: relative;
-    margin-top: 100px;
+    margin-top: 120px;
 }
 
 .product-card {
@@ -395,12 +416,17 @@ select:focus {
     background-color: rgb(230, 36, 75);
 }
 
-/* Auth */
-.unauthorized-container {
+/* Auth + notFound */
+.unauthorized-container,
+.notFound-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     line-height: 3em;
+}
+
+.notFound-container a {
+    line-height: normal;
 }
 
 .auth-options {
@@ -420,6 +446,7 @@ select:focus {
         padding: 0px;
         width: 40px;
         background-image: url(/img/miniLogo.png);
+        filter: invert();
         transition: all .15s linear;
     }
 

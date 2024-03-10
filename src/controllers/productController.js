@@ -1,6 +1,6 @@
 const Product = require('../models/Product')
 const { generateHtml, populateEditForm, printAllProducts, printSingleProduct } = require('../utils/helperFunctions')
-const { newProductForm } = require('../utils/htmlTemplates')
+const { newProductForm, notFound } = require('../utils/htmlTemplates')
 
 const ProductController = {
     getNewProductForm(req, res) {
@@ -40,7 +40,7 @@ const ProductController = {
         const viewType = req.originalUrl.includes('dashboard') === true ? 'dashboard' : 'products'
         res.redirect(`/shop/${viewType}/?category=${encodeURIComponent(req.body.categoryBtn)}`)
     },
-    
+
     async getProducts(req, res) {
         const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
@@ -53,7 +53,7 @@ const ProductController = {
 
             const productsHtml = printAllProducts(products, dashboardView)
             const html = generateHtml(productsHtml, req, dashboardView)
-            
+
             apiView === false
                 ? res.status(200).send(html)
                 : res.status(200).json({ message: `${products.length} Products successfully retrieved`, products })
@@ -75,15 +75,21 @@ const ProductController = {
             const product = await Product.findById(productId);
             const productHtml = printSingleProduct(product, productId, dashboardView)
             const html = generateHtml(productHtml, req, dashboardView)
-            
-            apiView === false
-                ? res.status(200).send(html)
-                : res.status(200).json({ message: 'Product successfully retrieved', product })
+            const notFoundHtml = generateHtml(notFound, req, dashboardView)
+
+            !product
+                ? apiView === false
+                    ? res.status(404).send(notFoundHtml)
+                    : res.status(404).json({ message: 'Product not found' })
+                : apiView === false
+                    ? res.status(200).send(html)
+                    : res.status(200).json({ message: 'Product successfully retrieved', product })
+
         }
         catch (error) {
             console.log(error);
             apiView === false
-                ? res.status(500).send('Error: Could not get specified product')
+                ? res.status(500).send(generateHtml(notFound, req, dashboardView))
                 : res.status(500).json({ message: 'Error: Could not get specified product' })
         }
     },
