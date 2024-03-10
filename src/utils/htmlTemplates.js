@@ -44,7 +44,7 @@ const newProductForm = `
             <input id="priceId" name="price" type="number" step="0.01" required>
 
             <label for="imgId">Imagen:</label>
-            <input id="imgId" name="img" type="file" >
+            <input id="imgId" name="img" type="file" accept="image/*">
 
             <label for="categoryId">Categoría:</label>
             <select id="categoryId" name="category">
@@ -139,6 +139,3 @@ const notLoggedIn = `
     </div>`
 
 module.exports = { htmlArray, index, newProductForm, registerForm, loginForm, notFound, unauthorizedUser, notLoggedIn }
-
-
-// <a href="/"><img class="miniLogo" src="/img/logo.png" alt="logo"/></a>

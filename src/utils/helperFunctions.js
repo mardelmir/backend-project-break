@@ -87,7 +87,7 @@ async function populateEditForm(productId) {
                 <input id="priceId" name="price" type="number" step="0.01" placeholder="${storedProduct.price}">
 
                 <label for="imgId">Imagen:</label>
-                <input id="imgId" name="img" type="file" >
+                <input id="imgId" name="img" type="file" accept="image/*">
 
                 <label for="categoryId">Categoría:</label>
                 <select id="categoryId" name="category">
@@ -117,7 +117,7 @@ function printAllProducts(products, dashboardView) {
         const detailBtn = `<a href="/shop/${viewType}/${product._id}" class="btn">Ver detalle</a>`
         html += `
         <div class="product-card">
-            <img src="${product.img || ''}" alt="${product.name}">
+            <img src="/img/${product.img}" alt="${product.name}">
             <h2>${product.name}</h2>
             <p>${product.description || ''}</p>
             <h4>${product.price}€</h4>
@@ -143,7 +143,7 @@ function printSingleProduct(product, productId, dashboardView) {
 
     return `
         <div class="product-card">
-            <img src="${product.img || ''}" alt="${product.name}">
+            <img src="/img/${product.img}" alt="${product.name}">
             <h2>${product.name}</h2>
             <p>${product.description || ''}</p>
             <h4>${product.price}€</h4>

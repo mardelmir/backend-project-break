@@ -183,6 +183,8 @@ Si selecciona la opción "Documentación API", se redirige al endpoint `/api/api
 
 ### Tienda / API: usuarios identificados con perfil de administrador
 
+##### IMPORTANTE: para poder documentar correctamente y hacer operaciones con la API sin errores, las rutas `/api/dashboard` NO se han protegido, solo es necesario iniciar sesión como administrador en las rutas `/shop/dashboard`, que son con las que interactua el cliente.
+
 Tras la identificación y autenticación del usuario como administrador los endpoints a los que puede acceder son:
 
 - `router.get('/dashboard/new', ProductController.getNewProductForm)`: devuelve el formulario para añadir un nuevo producto a la base de datos.

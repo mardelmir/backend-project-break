@@ -3,7 +3,7 @@ const { unauthorizedUser, notLoggedIn } = require("../utils/htmlTemplates")
 
 function checkAuthState(req, res, next) {
     if (!res.headersSent) {
-        if (req.originalUrl.includes('dashboard') && req.originalUrl !== '/logout') {
+        if (req.originalUrl.includes('/shop/dashboard') && req.originalUrl !== '/shop/logout') {
             if (!req.session.uid || !req.session.role) {
                 res.status(200).send(generateHtml(notLoggedIn, req))
             } else if (req.session.uid && req.session.role === 'user') {

@@ -23,7 +23,17 @@ const ProductController = {
     async createProduct(req, res) {
         const apiView = req.originalUrl.includes('api')
         try {
-            const product = await Product.create({ ...req.body });
+            // const { name, description, img, category, size, price } = req.body
+            // const product = await Product.create({
+            //     name: name,
+            //     description: description,
+            //     img: img,
+            //     category: category,
+            //     size: size,
+            //     price: price
+            // });
+            const product = await Product.create({ ...req.body})
+              
             apiView === false
                 ? res.status(201).redirect('/shop/dashboard')
                 : res.status(201).json({ message: 'Product successfully created', product })

@@ -285,6 +285,11 @@ h4 {
     border-radius: 5px;
 }
 
+img {
+    width: 250px;
+    min-height: 200px;
+}
+
 /* Formularios */
 .newForm-container {
     display: flex;
