@@ -14,10 +14,9 @@ Esta es una aplicación web en Node.js utilizando Express con mongoose para crea
     - [Funciones auxiliares](#funciones-auxiliares)
   - [Endpoints](#endpoints)
     - [Cualquier visitante](#cualquier-visitante)
-    - [Tienda: usuarios sin identificar o identificados con perfil estándar](#tienda-usuarios-sin-identificar-o-identificados-con-perfil-estándar)
-    - [Tienda: usuarios idetificados con perfil de administrador](#tienda-usuarios-identificados-con-perfil-de-administrador)
+    - [Tienda / API: usuarios sin identificar o identificados con perfil estándar](#tienda--api-usuarios-sin-identificar-o-identificados-con-perfil-estándar)
+    - [Tienda / API: usuarios idetificados con perfil de administrador](#tienda--api-usuarios-identificados-con-perfil-de-administrador)
     - [Tienda: identificación de usuario](#tienda-identificación-de-usuario)
-    - [API](#api)
   - [Funcionamiento de la aplicación](#funcionamiento-de-la-aplicación)
 
 
@@ -170,72 +169,63 @@ Según la selección del usuario, las siguientes rutas irán precedidas de:
 - `/shop/` si selecciona la opción "Tienda".
 - `/api/` si selecciona la opción "API".
 
+Según este prefijo, la función correspondiente del controlador devolverá la respuesta en HTML o JSON.
+
 Si selecciona la opción "Documentación API", se redirige al endpoint `/api/api-docs/`, donde se visualiza la documentación de la API con Swagger.
 
-### Tienda: usuarios sin identificar o identificados con perfil estándar
-Tras seleccionar la opción "Tienda" todas las rutas se inician con `/shop/`
+### Tienda / API: usuarios sin identificar o identificados con perfil estándar
 
 - `router.get('/')`: redirecciona a `/products`.
-- `router.get('/products', productController.getProducts)`: Devuelve todos los productos. Cada uno de ellos dispone de un enlace a su página de detalle.
-- `router.get('/products/:productId', productController.showProductById)`: Devuelve el detalle de un producto concreto.
+- `router.get('/products', productController.getProducts)`: devuelve todos los productos. Cada producto incluye un enlace para ver sus detalles (HTML).
+- `router.get('/products/:productId', productController.getProductById)`: devuelve toda la información almacenada del producto seleccionado (HTML o JSON).
+- `router.post('/products/category', ProductController.filterCategory)`: filtra y devuelve los productos según la categoría seleccionada (HTML o JSON).
 
-##### El backend dispone de un enrutado especifico que devuelve los datos en formato json para la API.
 
-- `router.get('/products', apiController.showProductsApi)`: Devuelve todos los productos. Cada uno de ellos dispone de un enlace a su página de detalle.
-- `router.get('/products/:productId', apiController.showProductByIdApi)`: Devuelve el detalle de un producto concreto.
+### Tienda / API: usuarios identificados con perfil de administrador
 
-### Tienda: usuarios identificados con perfil de administrador
+Tras la identificación y autenticación del usuario como administrador los endpoints a los que puede acceder son:
 
-Esta aplicación 
-La aplicación 'Tienda de ropa' esta especialmente pensada para el uso en el backend de los administradores de esta. Por ello dispone de un sistema de autenticación, la encriptacion y el hash realizado por crypto y bcrypt, mientras que el middleware de sesión autenticada comprobada gracias a la configuración del proyecto en `firebase`. 
+- `router.get('/dashboard/new', ProductController.getNewProductForm)`: devuelve el formulario para añadir un nuevo producto a la base de datos.
+- `router.post('/dashboard', ProductController.createProduct)`: añade un nuevo producto a la base de datos.
+- `router.get('/dashboard', ProductController.getProducts)`: devuelve todos los productos. Cada producto incluye un enlace para ver sus detalles (HTML).
+- `router.post('/dashboard/category', ProductController.filterCategory)`: filtra y devuelve los productos según la categoría seleccionada (HTML o JSON).
+- `router.get('/dashboard/:productId', ProductController.getProductById)`: devuelve toda la información almacenada del producto seleccionado (HTML o JSON).
+- `router.get('/dashboard/:productId/edit', ProductController.getEditProductForm)`: devuelve el formulario para editar un producto. Este formulario tiene como placeholder la información actualmente guardada de ese producto concreto.
+- `router.put('/dashboard/:productId', ProductController.updateProduct)`: actualiza el producto y redirige a la vista indivudial de ese producto (HTML o JSON).
+- `router.delete('/dashboard/:productId/delete', ProductController.deleteProduct)`: elimina un producto y redirige a `/dashboard` (HTML) o devuleve el producto eliminado junto con un mensaje (JSON).
 
-Una vez el administrador ha sido autenticado los endpoints a los que puede acceder son:
-
-- `router.get('/dashboard/',checksession, productController.showProducts)`: Devuelve todos los productos. Cada uno de ellos dispone de un enlace a su página de detalle. 
-- `router.get('/dashboard/:productId',checksession, productController.showProductById)`: Devuelve el detalle de un producto concreto, el cuál se puede editar o borrar siendo administrador.
-- `router.get('/dashboard/new',checksession, productController.showNewProductForm);`: Devuelve el formulario para la creación de un nuevo producto.
-- `router.get('/dashboard/:productId/edit',checksession, productController.showEditProductForm)`: Devuelve el formulario para la edición de un producto concreto.
-- `router.get('/dashboard/:productId/delete',checksession, productController.deleteProductById)`: Elimina un producto y devuelve un mensaje.
-
-En todos ellos se usa la funcion `checksession` que actúa como middleware para comprobar si hay una sesión iniciada. Si no lo está, redirige al login.
 
 ### Tienda: identificación de usuario
-- `router.get('/login/',authController.loginUserform)`: Devuelve el formulario para realizar el login al usuario/administrador. La respuesta devuelta viene en formato HTML. Desde aqui tambien podemos acceder al formulario de registro.
-- `router.post('/login/', authController.loginUser)`: Envia el email y el password aportado por el usuario/administrador, lo autentica y si las credenciales son correctas redirecciona al dashboard de productos de administrador, si no redirecciona de nuevo a login.
 
-- `router.get('/register/', authController.createUser)`: Devuelve el formulario para realizar la creacion de usuario. La respuesta devuelta viene en formato HTML.
+Endpoints utlizados para ejecutar la lógica de autenticación, que se realiza con `firebase` y `express-session`. Devuelve exclusivamente respuestas en HTML:
 
-- `router.post('/register/', authController.saveUser)`: Guarda la autenticacion mediante email y contraseña del usuario creado y lo redirecciona al dashboard de productos de administrador.
-
-- `router.get('/logout', authController.logout)`: Cierra sesión de usuario autenticada y redirecciona a la pagina principal.
-
-### API
-
-- `router.post('/dashboard', apiController.createProductApi)`: Crea un nuevo producto y nos envía un mensaje de confirmación.
-- `router.put('/dashboard/:productId', apiController.updateProductByIdApi)`: Modifica y actualiza un producto. También nos devuelve un mensaje de confirmación.
-- `router.get('/dashboard/:productId/delete', apiController.deleteProductByIdApi)`: Elimina un producto y nos devuelve un mensaje de confirmación.
+- `router.get('/login', authController.getLoginForm)`: devuelve el formulario para realizar el inicio de sesión. Desde aquí se accede también al formulario de registro.
+- `router.post('/login', authController.login)`: gestiona el inicio de sesión con el email y la contraseña enviadas en el formulario. Si las credenciales son correctas, se inicia sesión y el usuario pasa a `/dashboard`, si no se redirige a `/login`.
+- `router.get('/register', authController.getRegisterForm)`: devuelve el formulario de registro, donde se indica si el perfil del nuevo usuario es de tipo estándar o de tipo administrador.
+- `router.post('/register', authController.createAccount)`: gestiona la creación de un nuevo usuario con el perfil especificado, inicia sesión automáticamente y redirige a `/products` o `/dashboard` según el tipo de perfil.
+- `router.post('/logout', authController.logout)`: cierra la sesión del usuario y redirige a `/products`.
 
 
 ## Funcionamiento de la aplicación
 
-La aplicación 'Tienda de ropa' esta desarrollada en Node.js. Para ello se han utilizado varias dependencias que explicaremos a continuación.
+Las dependencias de Node.js utilizadas para la elaboración de esta aplicación son:
 
-- `bcrypt`: Bcrypt es una función de hash de contraseñas y derivación de claves para contraseñas basada en el cifrado Blowfish.
+- `bcrypt`: función para generar hashes de contraseñas y derivación de claves para contraseñas basada en el cifrado Blowfish.
 
-- `crypto`: Herramienta que permite encriptar y desencriptar String en Node.js.
+- `crypto`: genera Strings encriptados y/o los desencripta. Nativa de Node.js.
 
-- `dotenv`: Es un módulo de dependencia cero que carga las variables de entorno desde un archivo .env.
+- `dotenv`: módulo de dependencia cero para carga las variables de entorno desde un archivo .env.
 
-- `express`: Es el entorno de trabajo en el que se ha desarrollado la app y por el cual se ha lanzado un servidor el cual está escuchando por variable de entorno en:  http://localhost:${PORT};
+- `express`: entorno de trabajo en el que se ha desarrollado la app y por el cual se ha creado un servidor que escucha por el puerto especificado en las variables de entorno.
 
-- `express-session`: Es un middleware que almacena los datos de sesión en el servidor.
+- `express-session`: middleware para almacenar datos de sesión en el servidor.
 
 - `firebase`: Es una solución creada por Google para el desarrollo y mejora de aplicaciones. En nuestro caso hemos desarrollado la autenticación del usuario/administrador.
 
-- `method-override`: Middleware para Express que permite utilizar métodos HTTP como PUT o DELETE en formularios HTML.
+- `method-override`: middleware para Express que permite utilizar métodos HTTP como PUT o DELETE en formularios HTML.
 
-- `mongoose`: Es una librería de Node.js que nos permite realizar consultas y peticiones a bases de datos alojadas en MongoDB Atlas.
+- `mongoose`: librería de Node.js que permite realizar consultas y peticiones a bases de datos alojadas en MongoDB Atlas.
 
-- `swagger-ui-express`: Es una infraestructura de visualización que puede analizar la especificación OpenAPI y generar una consola de API para que los usuarios puedan aprender y ejecutar la API REST de forma rápida y sencilla. En nuestro caso solo se ejecutarán las rutas "api".
+- `swagger-ui-express`: infraestructura de visualización que puede analizar la especificación OpenAPI y generar una consola de API para que los usuarios puedan interactuar con la API REST. 
 
-- `jest`: Es una biblioteca de Node.js para crear, ejecutar y estructurar pruebas o test. En nuestro caso se han realizado los test a las funciones de la aplicación.
+- `jest`: librería de Node.js para crear, ejecutar y estructurar test. Se han utilizado para probar las funciones de la aplicación.
