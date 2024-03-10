@@ -7,7 +7,8 @@ const checkAuthState = require('../middlewares/authMiddleware')
 
 router.use('/', authRoutes)
 router.use('/', productRoutes)
-router.use('/', checkAuthState, dashboardRoutes)
+router.use('/', dashboardRoutes)
+//router.use('/', checkAuthState, dashboardRoutes)
 
 
 module.exports = router
