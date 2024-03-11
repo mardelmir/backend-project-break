@@ -11,5 +11,4 @@ router.get('/dashboard/:productId/edit', ProductController.getEditProductForm)
 router.put('/dashboard/:productId', ProductController.updateProduct)
 router.delete('/dashboard/:productId/delete', ProductController.deleteProduct)
 
-
 module.exports = router

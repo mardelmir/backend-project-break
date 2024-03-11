@@ -23,7 +23,7 @@ const ProductController = {
     async createProduct(req, res) {
         const apiView = req.originalUrl.includes('api')
         try {
-            const product = await Product.create({ ...req.body})
+            const product = await Product.create({ ...req.body })
             apiView === false
                 ? res.status(201).redirect('/shop/dashboard')
                 : res.status(201).json({ message: 'Product successfully created', product })
@@ -125,9 +125,10 @@ const ProductController = {
                     price: req.body.price || storedProduct.price
                 }, { new: true })
 
+            if (!storedProduct) { res.status(404).json({ message: 'Product not found' }) }
             apiView === false
                 ? res.status(200).redirect(`/shop/dashboard/${req.params.productId}`)
-                : res.status(200).json({ message: 'Product successfully updated', html: updatedProduct })
+                : res.status(200).json({ message: 'Product successfully updated', updatedProduct })
         }
         catch (error) {
             console.log(error);

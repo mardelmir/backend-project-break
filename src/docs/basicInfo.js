@@ -1,8 +1,8 @@
 module.exports = {
     openapi: "3.0.3",
     info: {
-        title: "Shop products",
-        description: "ShopProducts API",
+        title: "Tienda de ropa",
+        description: "Tienda de Ropa API",
         version: "1.0.0"
     }
 }
