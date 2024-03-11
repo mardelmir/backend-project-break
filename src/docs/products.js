@@ -21,15 +21,15 @@ module.exports = {
 
             }
         },
-        "/api/products/{_id}": {
+        "/api/products/{id}": {
             get: {
                 tags: ["Products and Dashboard"],
-                summary: "Get product by _id",
-                description: "Gets single product by _id, accessible for unidentified and standard users",
+                summary: "Get product by id",
+                description: "Gets single product by id, accessible for unidentified and standard users",
                 operationId: "getOneProduct",
                 parameters: [
                     {
-                        name: "_id",
+                        name: "id",
                         in: "path",
                         required: true,
                         schema: {
@@ -128,15 +128,15 @@ module.exports = {
 
             }
         },
-        "/api/dashboard/{_id}": {
+        "/api/dashboard/{id}": {
             get: {
                 tags: ["Products and Dashboard"],
-                summary: "Get product by _id",
-                description: "Gets single product by _id, this view for administrator users is the same as for unidentified or standard users",
+                summary: "Get product by id",
+                description: "Gets single product by id, this view for administrator users is the same as for unidentified or standard users",
                 operationId: "getOneProduct",
                 parameters: [
                     {
-                        name: "_id",
+                        name: "id",
                         in: "path",
                         required: true,
                         schema: {
@@ -160,12 +160,12 @@ module.exports = {
             },
             put: {
                 tags: ["Dashboard"],
-                summary: "Update product by _id",
-                description: "Updates a product by _id, only accessible from '/dashboard' routes",
+                summary: "Update product by id",
+                description: "Updates a product by id, only accessible from '/dashboard' routes",
                 operationId: "updateProduct",
                 parameters: [
                     {
-                        name: "_id",
+                        name: "id",
                         in: "path",
                         required: true,
                         schema: {
@@ -194,14 +194,16 @@ module.exports = {
                     404: { description: "Product not found" },
                     500: { description: "Error: Could not update product" }
                 }
-            },
+            }
+        },
+        "/api/dashboard/{id}/delete": {
             delete: {
                 tags: ["Dashboard"],
                 summary: "Delete product by _id",
                 description: "Deletes a product by _id, only accessible from '/dashboard' routes",
                 parameters: [
                     {
-                        name: "_id",
+                        name: "id",
                         in: "path",
                         required: true,
                         schema: {
@@ -219,6 +221,7 @@ module.exports = {
                             }
                         }
                     },
+                    404: { description: "Product not found" },
                     500: { description: "Error: Could not delete product" }
                 }
             }

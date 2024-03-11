@@ -3,6 +3,11 @@ const { generateHtml, populateEditForm, printAllProducts, printSingleProduct } =
 const { newProductForm, notFound } = require('../utils/htmlTemplates')
 
 const ProductController = {
+    redirect(req, res) {
+        req.originalUrl.includes('api')
+            ? res.redirect('/api/products')
+            : res.redirect('/shop/products')
+    },
     getNewProductForm(req, res) {
         const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
@@ -142,6 +147,7 @@ const ProductController = {
         const apiView = req.originalUrl.includes('api')
         try {
             const deletedProduct = await Product.findByIdAndDelete(req.params.productId);
+            if (!deletedProduct) { res.status(404).json({ message: 'Product not found' }) }
             apiView === false
                 ? res.status(200).redirect('/shop/dashboard')
                 : res.status(200).json({ message: 'Product successfully deleted', deletedProduct })
