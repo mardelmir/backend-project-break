@@ -1,5 +1,5 @@
 # Documentación: Tienda de ropa
-Esta es una aplicación web en Node.js utilizando Express con mongoose para crear una tienda de ropa con un catálogo de productos y un dashboard para el administrador. Los productos incluidos en el catálogo se guardan en una base de datos de mongo en Atlas.
+Aplicación web desarrollada en Node.js utilizando Express y Mongoose para crear una tienda de ropa con un catálogo de productos y un dashboard para el administrador. Los productos incluidos en el catálogo se guardan en una base de datos de mongo en Atlas.
 
 ## Índice
 
@@ -212,22 +212,24 @@ Endpoints utlizados para ejecutar la lógica de autenticación, que se realiza c
 
 Las dependencias de Node.js utilizadas para la elaboración de esta aplicación son:
 
-- `bcrypt`: función para generar hashes de contraseñas y derivación de claves para contraseñas basada en el cifrado Blowfish.
+- `bcrypt`: librería que proporciona funciones de hash de contraseñas seguras utilizando el algoritmo bcrypt. Es comúnmente utilizada para almacenar contraseñas de forma segura en aplicaciones web y otros sistemas que requieren autenticación.
 
-- `crypto`: genera Strings encriptados y/o los desencripta. Nativa de Node.js.
+- `crypto`: módulo nativo de Node.js que permite realizar operaciones criptográficas, como la generación de hashes, cifrado y descifrado de datos, generación de números aleatorios criptográficamente seguros, entre otras.
 
-- `dotenv`: módulo de dependencia cero para carga las variables de entorno desde un archivo .env.
+- `dotenv`: módulo que permite cargar variables de entorno desde un archivo .env en una aplicación Node.js. Esto permite separar la configuración de la aplicación del código fuente y facilita la gestión de variables sensibles como contraseñas y claves de API.
 
 - `express`: entorno de trabajo en el que se ha desarrollado la app y por el cual se ha creado un servidor que escucha por el puerto especificado en las variables de entorno.
 
-- `express-session`: middleware para almacenar datos de sesión en el servidor.
+- `express-session`: middleware que facilita la gestión de sesiones de usuario en aplicaciones web. Permite almacenar y acceder a datos de sesión en el servidor.
 
-- `firebase`: Es una solución creada por Google para el desarrollo y mejora de aplicaciones. En nuestro caso hemos desarrollado la autenticación del usuario/administrador.
+- `firebase`: plataforma de desarrollo de aplicaciones móviles y web proporcionada por Google. La librería Firebase para Node.js permite integrar aplicaciones Node.js con los servicios de Firebase. En este caso, se ha utilizado para realizar la autenticación del usuario/administrador.
 
-- `method-override`: middleware para Express que permite utilizar métodos HTTP como PUT o DELETE en formularios HTML.
+- `method-override`: middleware para Express que permite utilizar métodos HTTP como PUT o DELETE en formularios HTML, que normalmente solo admiten GET y POST.
 
-- `mongoose`: librería de Node.js que permite realizar consultas y peticiones a bases de datos alojadas en MongoDB Atlas.
+- `mongoose`: librería de  de modelado de objetos MongoDB para Node.js que permite simplificar la definición de modelos y realizar consultas y peticiones a bases de datos alojadas en MongoDB Atlas.
 
-- `swagger-ui-express`: infraestructura de visualización que puede analizar la especificación OpenAPI y generar una consola de API para que los usuarios puedan interactuar con la API REST. 
+- `nodemon`: herramienta de desarrollo para Node.js que monitoriza cambios en los archivos de un proyecto y reinicia automáticamente la aplicación cuando se detectan cambios.
 
-- `jest`: librería de Node.js para crear, ejecutar y estructurar test. Se han utilizado para probar las funciones de la aplicación.
+- `swagger-ui-express`: middleware para express que proporciona una interfaz de usuario generada automáticamente para la documentación de API basada en el estándar OpenAPI. Simplifica la visualización y prueba de API directamente desde el navegador.
+
+- `jest`: framework de pruebas unitarias desarrollado para JavaScript para crear, ejecutar y estructurar tests de funciones. Se han utilizado para probar las funciones de la aplicación. 
