@@ -8,6 +8,7 @@ const ProductController = {
             ? res.redirect('/api/products')
             : res.redirect('/shop/products')
     },
+    
     getNewProductForm(req, res) {
         const dashboardView = req.originalUrl.includes('dashboard')
         const apiView = req.originalUrl.includes('api')
