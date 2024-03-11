@@ -8,7 +8,7 @@ const { registerForm, loginForm } = require('../utils/htmlTemplates')
 const User = require('../models/User')
 
 // Emulador: firebase emulators:start
-connectAuthEmulator(auth, 'http://localhost:9099')
+// connectAuthEmulator(auth, 'http://localhost:9099')
 
 const authController = {
     getRegisterForm(req, res) {

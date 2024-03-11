@@ -117,7 +117,9 @@ function printAllProducts(products, dashboardView) {
         const detailBtn = `<a href="/shop/${viewType}/${product._id}" class="btn">Ver detalle</a>`
         html += `
         <div class="product-card">
-            <img src="/img/${product.img}" alt="${product.name}">
+            <div class="product-img">
+                <img src="/img/${product.img}" alt="${product.name}">
+            </div>
             <h2>${product.name}</h2>
             <p>${product.description || ''}</p>
             <h4>${product.price}€</h4>
@@ -143,7 +145,9 @@ function printSingleProduct(product, productId, dashboardView) {
 
     return `
         <div class="product-card">
-            <img src="/img/${product.img}" alt="${product.name}">
+            <div class="product-img">
+                <img src="/img/${product.img}" alt="${product.name}">
+            </div>
             <h2>${product.name}</h2>
             <p>${product.description || ''}</p>
             <h4>${product.price}€</h4>

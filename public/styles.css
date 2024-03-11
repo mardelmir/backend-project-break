@@ -285,9 +285,19 @@ h4 {
     border-radius: 5px;
 }
 
-img {
+.product-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 250px;
-    min-height: 200px;
+    height: 250px;
+}
+
+.product-img img {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
 }
 
 /* Formularios */
