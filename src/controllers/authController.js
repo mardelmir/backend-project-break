@@ -1,14 +1,11 @@
 const firebaseApp = require('../config/firebase')
-const { getAuth, connectAuthEmulator, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } = require('firebase/auth')
+const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } = require('firebase/auth')
 const { } = require('firebase/auth')
 const auth = getAuth(firebaseApp)
 
 const { generateHtml } = require('../utils/helperFunctions')
 const { registerForm, loginForm } = require('../utils/htmlTemplates')
 const User = require('../models/User')
-
-// Emulador: firebase emulators:start
-// connectAuthEmulator(auth, 'http://localhost:9099')
 
 const authController = {
     getRegisterForm(req, res) {
