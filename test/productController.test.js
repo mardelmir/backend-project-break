@@ -9,8 +9,9 @@ const {
     updateProduct,
     deleteProduct } = require("../src/controllers/productController");
 
+    TODO: "Ver si necesito instalar supertest o con jest solo me basta"
 
-beforeEach(() => { resetProducts() });
+ IMPORTANTE: "Antes o después de cada test hay que resetear los datos, pero para no borrar todo lo que hay en la base de datos usar una función que elimine o deshaga las acciones generadas en cada test"
 
 // describe("redirect tests", () => {
 //     it("Should redirect to '/api/products' if it finds the word 'api' in the URL", () => {
