@@ -52,28 +52,39 @@ function generateHtml(content, req, dashboardView) {
     return [head, nav, userAction, opMain, content, cloMainHtml].join('')
 }
 
-const selectedCategory = (storedCategory) => {
-    const categories = ['Camisetas', 'Pantalones', 'Zapatos', 'Accesorios'];
-    const html = categories.map((category) =>
-        category !== storedCategory
-            ? `<option value="${category}" name="${category}">${category}</option>`
-            : `<option value="${category}" name="${category}" selected>${category}</option>`
-    );
-    return html.join('')
-};
+// const selectedCategory = (storedCategory) => {
+//     const categories = ['Camisetas', 'Pantalones', 'Zapatos', 'Accesorios'];
+//     const html = categories.map((category) =>
+//         category !== storedCategory
+//             ? `<option value="${category}" name="${category}">${category}</option>`
+//             : `<option value="${category}" name="${category}" selected>${category}</option>`
+//     );
+//     return html.join('')
+// };
 
-const selectedSize = (storedSize) => {
-    const sizes = ['XS', 'S', 'M', 'L', 'XL', 'Unitalla'];
-    const html = sizes.map((size) =>
-        size !== storedSize
-            ? `<option value="${size}" name="${size}">${size}</option>`
-            : `<option value="${size}" name="${size}" selected>${size}</option>`)
+// const selectedSize = (storedSize) => {
+//     const sizes = ['XS', 'S', 'M', 'L', 'XL', 'Unitalla'];
+//     const html = sizes.map((size) =>
+//         size !== storedSize
+//             ? `<option value="${size}" name="${size}">${size}</option>`
+//             : `<option value="${size}" name="${size}" selected>${size}</option>`)
+//     return html.join('')
+// };
+
+const selectedOption = (possibleOptions, storedInfo) => {
+    const html = possibleOptions.map(element =>
+        element != storedInfo
+            ? `<option value="${element}" name="${element}">${element}</option>`
+            : `<option value="${element}" name="${element}" selected>${element}</option>`
+    )
     return html.join('')
-};
+}
 
 async function populateEditForm(productId) {
     try {
         const storedProduct = await Product.findById(productId)
+        const categories = ['Camisetas', 'Pantalones', 'Zapatos', 'Accesorios'];
+        const sizes = ['XS', 'S', 'M', 'L', 'XL', 'Unitalla'];
         return `
         <h1>Editar producto</h1>
             <form class="form" id="editForm" action="/shop/dashboard/${productId}?_method=PUT" method="post">
@@ -91,12 +102,12 @@ async function populateEditForm(productId) {
 
                 <label for="categoryId">Categoría:</label>
                 <select id="categoryId" name="category">
-                    ${selectedCategory(storedProduct.category)}
+                    ${selectedOption(categories, storedProduct.category)}
                 </select>
 
                 <label for="sizeId">Talla:</label>
                 <select id="sizeId" name="size">
-                    ${selectedSize(storedProduct.size)}
+                    ${selectedOption(sizes, storedProduct.size)}
                 </select>
                 <div class="actions">
                     <button class="formBtn" type="submit">Guardar</button>
