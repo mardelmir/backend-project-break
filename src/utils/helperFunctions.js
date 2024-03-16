@@ -52,25 +52,6 @@ function generateHtml(content, req, dashboardView) {
     return [head, nav, userAction, opMain, content, cloMainHtml].join('')
 }
 
-// const selectedCategory = (storedCategory) => {
-//     const categories = ['Camisetas', 'Pantalones', 'Zapatos', 'Accesorios'];
-//     const html = categories.map((category) =>
-//         category !== storedCategory
-//             ? `<option value="${category}" name="${category}">${category}</option>`
-//             : `<option value="${category}" name="${category}" selected>${category}</option>`
-//     );
-//     return html.join('')
-// };
-
-// const selectedSize = (storedSize) => {
-//     const sizes = ['XS', 'S', 'M', 'L', 'XL', 'Unitalla'];
-//     const html = sizes.map((size) =>
-//         size !== storedSize
-//             ? `<option value="${size}" name="${size}">${size}</option>`
-//             : `<option value="${size}" name="${size}" selected>${size}</option>`)
-//     return html.join('')
-// };
-
 const selectedOption = (possibleOptions, storedInfo) => {
     const html = possibleOptions.map(element =>
         element != storedInfo
